@@ -132,7 +132,7 @@ public class BrailleCell {
 		}
 		this.clear();
 		for (int i = 0; i < 8; i++) {
-			if (pins.charAt(i) == '2') {
+			if (pins.charAt(i) == '1') {
 				listOfPins[i] = true;
 			}
 		}
