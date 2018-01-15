@@ -22,6 +22,7 @@ public class AudioPlayer extends Player {
 	@Override
 	public void removeButtonListener(int index) {
 		// TODO Auto-generated method stub
+		int test = 0;
 		
 	}
 
