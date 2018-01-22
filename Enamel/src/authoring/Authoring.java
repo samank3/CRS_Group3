@@ -21,12 +21,18 @@ public class Authoring {
 		frame.setTitle("Authoring Application");
 
 		JFileChooser file_chooser = new JFileChooser();
-		file_chooser.setCurrentDirectory(new java.io.File("%HOMEPATH%"));
+		
+		file_chooser.setCurrentDirectory(new java.io.File("C:"));
 		file_chooser.setDialogTitle("Open Scenario File");
 		JButton chooseScenario = new JButton("Choose Scenario");
 		chooseScenario.setVisible(true);
+
+		chooseScenario.getAccessibleContext().setAccessibleName("Choose a Scenario");
+		chooseScenario.getAccessibleContext().setAccessibleDescription("Choose a damn Scenario.");
+		
 		chooseScenario.addActionListener(new ActionListener() {
 
+			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
