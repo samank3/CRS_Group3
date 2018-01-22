@@ -21,7 +21,7 @@ public class Authoring {
 		frame.setTitle("Authoring Application");
 
 		JFileChooser file_chooser = new JFileChooser();
-		
+		//as
 		file_chooser.setCurrentDirectory(new java.io.File("C:"));
 		file_chooser.setDialogTitle("Open Scenario File");
 		JButton chooseScenario = new JButton("Choose Scenario");
