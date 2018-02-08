@@ -2,7 +2,10 @@ package authoring;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.JButton;
@@ -17,6 +20,7 @@ import javax.swing.UIManager;
 import java.awt.ComponentOrientation;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 
 public class Authoring {
@@ -25,7 +29,7 @@ public class Authoring {
 	private static JFileChooser file_chooser;
 	private static JTextArea scenarioReader;
 	
-	private static void openFileChooser() {
+	private static void openFileDialog() {
 		if(file_chooser.showOpenDialog(chooseScenario) == JFileChooser.APPROVE_OPTION) {
 			
 			StringBuffer buff = new StringBuffer();
@@ -39,7 +43,8 @@ public class Authoring {
 					if(lineCounter == 0) {
 						if(!line.startsWith("Cell")) {
 							System.out.println("File: " + file_chooser.getSelectedFile() + " is not a valid format");
-							frame.setTitle("Authoring Application - Invalid Format");
+							//frame.setTitle("Authoring Application - Invalid Format");
+							JOptionPane.showMessageDialog(null, "Please select a valid scenario file.");
 							scanner.close();
 							return;
 						}
@@ -47,7 +52,8 @@ public class Authoring {
 					if(lineCounter == 1) {
 						if(!line.startsWith("Button")) {
 							System.out.println("File: " + file_chooser.getSelectedFile() + " is not a valid format");
-							frame.setTitle("Authoring Application - Invalid Format");
+							//frame.setTitle("Authoring Application - Invalid Format");
+							JOptionPane.showMessageDialog(null, "Please select a valid scenario file.");
 							scanner.close();
 							return;
 						}
@@ -59,17 +65,42 @@ public class Authoring {
 				//System.out.println(buff.toString());
 				scenarioReader.setText(buff.toString());
 				System.out.println("File: " + file_chooser.getSelectedFile() + " has been imported");
-				frame.setTitle("Authoring Application - " + file_chooser.getSelectedFile());
+				//frame.setTitle("Authoring Application - " + file_chooser.getSelectedFile());
+				
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 				
 			
 		}else {
-			System.out.println("Error Selecting File");
-			frame.setTitle("Authoring Application - Error Selecting File");
+			System.out.println("Error Opening File");
+			//frame.setTitle("Authoring Application - Error Selecting File");
+			JOptionPane.showMessageDialog(null, "Error Opening File");
+		}
+	}
+	
+	private static void saveFileDialog() {
+		if(file_chooser.showSaveDialog(chooseScenario) == JFileChooser.APPROVE_OPTION) {
+			File currentFile = file_chooser.getSelectedFile();
+			
+			try {
+				if(!currentFile.exists()) {
+					currentFile.createNewFile();
+				}
+				
+				FileWriter fw = new FileWriter(currentFile);
+				fw.write(scenarioReader.getText());
+				fw.close();
+				
+			}catch(IOException e) {
+				e.printStackTrace();
+			}
+			
+		}else {
+			System.out.println("Error Saving File");
+			//frame.setTitle("Authoring Application - Error Selecting File");
+			JOptionPane.showMessageDialog(null, "Error Saving File");
 		}
 	}
 	
@@ -107,8 +138,7 @@ public class Authoring {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0){
-				// TODO Auto-generated method stub
-				openFileChooser();
+				openFileDialog();
 			}
 			
 		});
@@ -146,8 +176,7 @@ public class Authoring {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				openFileChooser();
+				openFileDialog();
 			}
 			
 		});
@@ -159,8 +188,7 @@ public class Authoring {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				//System.out.println("Save Pls");
+				saveFileDialog();
 				
 			}
 			});
