@@ -20,7 +20,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 
 public class Authoring {
-	//Branch Upper
 	private static JFrame frame;
 	private static JButton chooseScenario;
 	private static JFileChooser file_chooser;
