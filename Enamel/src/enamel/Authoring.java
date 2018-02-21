@@ -72,6 +72,7 @@ public class Authoring {
 				scanner.close();
 				//System.out.println(buff.toString());
 				scenarioReader.setText(buff.toString());
+				btnTestScenario.setEnabled(true);
 				System.out.println("File: " + file_chooser.getSelectedFile() + " has been imported");
 				//frame.setTitle("Authoring Application - " + file_chooser.getSelectedFile());
 				
@@ -134,17 +135,6 @@ public class Authoring {
 		scenarioReader.setLineWrap(true);
 		scenarioReader.setEditable(false);
 
-		btnChooseScenario.getAccessibleContext().setAccessibleName("Choose a Scenario");
-		btnChooseScenario.getAccessibleContext().setAccessibleDescription("Choose an existing scenario to edit.");
-		
-		btnCreateScenario.getAccessibleContext().setAccessibleName("Create a New Scenario");
-		btnCreateScenario.getAccessibleContext().setAccessibleDescription("Create a totally new scenario with new features.");
-		
-		btnCreateAudioFiles.getAccessibleContext().setAccessibleName("Create an Audio File");
-		btnCreateAudioFiles.getAccessibleContext().setAccessibleDescription("Create an audio file to use with your script.");
-		
-		btnChooseScenario.getAccessibleContext().setAccessibleName("Test the Scenario Open");
-		btnChooseScenario.getAccessibleContext().setAccessibleDescription("Test the current open scenario file with the visual player");
 		
 		//JScrollPane scroll = new JScrollPane(scenarioReader);
 
@@ -172,8 +162,39 @@ public class Authoring {
 		btnCreateScenario.setMaximumSize(new Dimension(95, 23));
 		
 		btnTestScenario = new JButton("Test Scenario");
+		btnTestScenario.setEnabled(false);
 		btnTestScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				String fileToCheck;
+				
+				if(!file_chooser.getSelectedFile().toString().isEmpty()) {
+					fileToCheck = file_chooser.getSelectedFile().toString();
+				}else {
+					File currentFile = new File("FactoryScenarios/Scenario_temp.txt");
+					try {
+						if(!currentFile.exists()) {
+							currentFile.createNewFile();
+						}
+						
+						FileWriter fw = new FileWriter(currentFile);
+						fw.write(scenarioReader.getText());
+						fw.close();
+						
+					}catch(IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					fileToCheck = "FactoryScenarios/Scenario_temp.txt";
+				}
+				
+				Thread starterCodeThread = new Thread("Starter Code Thread") {
+				    public void run(){    
+				        ScenarioParser s = new ScenarioParser(true);
+				        s.setScenarioFile(fileToCheck);
+				    }
+				};
+				starterCodeThread.start();
 			}
 		});
 		
@@ -271,6 +292,19 @@ public class Authoring {
 				
 			}
 			});
+		
+		
+		btnChooseScenario.getAccessibleContext().setAccessibleName("Choose a Scenario");
+		btnChooseScenario.getAccessibleContext().setAccessibleDescription("Choose an existing scenario to edit.");
+		
+		btnCreateScenario.getAccessibleContext().setAccessibleName("Create a New Scenario");
+		btnCreateScenario.getAccessibleContext().setAccessibleDescription("Create a totally new scenario with new features.");
+		
+		btnCreateAudioFiles.getAccessibleContext().setAccessibleName("Create an Audio File");
+		btnCreateAudioFiles.getAccessibleContext().setAccessibleDescription("Create an audio file to use with your script.");
+		
+		btnTestScenario.getAccessibleContext().setAccessibleName("Test the Scenario Open");
+		btnTestScenario.getAccessibleContext().setAccessibleDescription("Test the current open scenario file with the visual player");
 		
 		frame.setVisible(true);
 		
