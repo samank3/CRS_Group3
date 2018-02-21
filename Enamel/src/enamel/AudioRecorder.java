@@ -32,7 +32,7 @@ public class AudioRecorder {
 	DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
 	
 	if(!AudioSystem.isLineSupported(info)) {
-		return "Line is not supported";
+		return "No Microphone Detected.";
 	}
 	
 	
