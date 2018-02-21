@@ -1,4 +1,4 @@
-package authoring;
+package enamel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,21 +22,27 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JMenu;
+import java.awt.Point;
+import java.awt.Dimension;
 
 public class Authoring {
 	private static JFrame frame;
-	private static JButton chooseScenario;
+	private static JButton btnChooseScenario;
 	private static JFileChooser file_chooser;
 	private static JTextArea scenarioReader;
+	private static JButton btnCreateScenario;
 	
 	private static void openFileDialog() {
-		if(file_chooser.showOpenDialog(chooseScenario) == JFileChooser.APPROVE_OPTION) {
+		if(file_chooser.showOpenDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
 			
 			StringBuffer buff = new StringBuffer();
 			scenarioReader.setText("");
 			int lineCounter = 0;
 			try {
 				Scanner scanner = new Scanner(file_chooser.getSelectedFile());
+				//ScenarioParser s = new ScenarioParser(true);
+				//s.setScenarioFile(file_chooser.getSelectedFile().toString());
+				
 				while(scanner.hasNextLine()) {
 					//Check if first two lines follow the specific plan.
 					String line = scanner.nextLine();
@@ -81,7 +87,7 @@ public class Authoring {
 	}
 	
 	private static void saveFileDialog() {
-		if(file_chooser.showSaveDialog(chooseScenario) == JFileChooser.APPROVE_OPTION) {
+		if(file_chooser.showSaveDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
 			File currentFile = file_chooser.getSelectedFile();
 			
 			try {
@@ -115,8 +121,9 @@ public class Authoring {
 		file_chooser = new JFileChooser();
 		file_chooser.setCurrentDirectory(new java.io.File("C:"));
 		file_chooser.setDialogTitle("Open Scenario File");
-		chooseScenario = new JButton("Choose Scenario");
-		chooseScenario.setVisible(true);
+		btnChooseScenario = new JButton("Edit Scenario");
+		btnChooseScenario.setLocation(new Point(100, 100));
+		btnChooseScenario.setVisible(true);
 		
 		scenarioReader = new JTextArea();
 		scenarioReader.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -125,13 +132,14 @@ public class Authoring {
 		scenarioReader.setLineWrap(true);
 		scenarioReader.setEditable(false);
 
-		chooseScenario.getAccessibleContext().setAccessibleName("Choose a Scenario");
-		chooseScenario.getAccessibleContext().setAccessibleDescription("Choose a damn Scenario.");
+		btnChooseScenario.getAccessibleContext().setAccessibleName("Choose a Scenario");
+		btnChooseScenario.getAccessibleContext().setAccessibleDescription("Choose a damn Scenario.");
 		
-		JScrollPane scroll = new JScrollPane(scenarioReader);
+		//JScrollPane scroll = new JScrollPane(scenarioReader);
 
 		
-		chooseScenario.addActionListener(new ActionListener() {
+		
+		btnChooseScenario.addActionListener(new ActionListener() {
 
 			
 			
@@ -142,27 +150,50 @@ public class Authoring {
 			}
 			
 		});
+		
+		btnCreateScenario = new JButton("Create Scenario");
+		btnCreateScenario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnCreateScenario.setPreferredSize(new Dimension(95, 23));
+		btnCreateScenario.setMinimumSize(new Dimension(95, 23));
+		btnCreateScenario.setMaximumSize(new Dimension(95, 23));
+		
+		JButton btnTestScenario = new JButton("Test Scenario");
+		btnTestScenario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(chooseScenario, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scenarioReader))
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btnTestScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnCreateScenario, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+						.addComponent(btnChooseScenario, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
+					.addGap(18)
+					.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(3)
-					.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(chooseScenario, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(359, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(btnCreateScenario, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(btnChooseScenario, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(btnTestScenario, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())))
 		);
 		frame.getContentPane().setLayout(groupLayout);
 		scenarioReader.setVisible(true);
-		frame.getContentPane().add(scroll);
-		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 		
