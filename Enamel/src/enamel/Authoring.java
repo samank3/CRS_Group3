@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -31,6 +31,8 @@ public class Authoring {
 	private static JFileChooser file_chooser;
 	private static JTextArea scenarioReader;
 	private static JButton btnCreateScenario;
+	private static JButton btnCreateAudioFiles;
+	private static JButton btnTestScenario;
 	
 	private static void openFileDialog() {
 		if(file_chooser.showOpenDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
@@ -133,7 +135,16 @@ public class Authoring {
 		scenarioReader.setEditable(false);
 
 		btnChooseScenario.getAccessibleContext().setAccessibleName("Choose a Scenario");
-		btnChooseScenario.getAccessibleContext().setAccessibleDescription("Choose a damn Scenario.");
+		btnChooseScenario.getAccessibleContext().setAccessibleDescription("Choose an existing scenario to edit.");
+		
+		btnCreateScenario.getAccessibleContext().setAccessibleName("Create a New Scenario");
+		btnCreateScenario.getAccessibleContext().setAccessibleDescription("Create a totally new scenario with new features.");
+		
+		btnCreateAudioFiles.getAccessibleContext().setAccessibleName("Create an Audio File");
+		btnCreateAudioFiles.getAccessibleContext().setAccessibleDescription("Create an audio file to use with your script.");
+		
+		btnChooseScenario.getAccessibleContext().setAccessibleName("Test the Scenario Open");
+		btnChooseScenario.getAccessibleContext().setAccessibleDescription("Test the current open scenario file with the visual player");
 		
 		//JScrollPane scroll = new JScrollPane(scenarioReader);
 
@@ -160,9 +171,42 @@ public class Authoring {
 		btnCreateScenario.setMinimumSize(new Dimension(95, 23));
 		btnCreateScenario.setMaximumSize(new Dimension(95, 23));
 		
-		JButton btnTestScenario = new JButton("Test Scenario");
+		btnTestScenario = new JButton("Test Scenario");
 		btnTestScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		
+		btnCreateAudioFiles = new JButton("Create Audio File");
+		btnCreateAudioFiles.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String gottenFileName = JOptionPane.showInputDialog(null,"Enter Name of Audio File to Create","Create Audio File",JOptionPane.QUESTION_MESSAGE);
+				String gottenDuration = JOptionPane.showInputDialog(null,"Enter The Duration of the Audio File in Seconds","Create Audio File",JOptionPane.QUESTION_MESSAGE);
+				
+				
+				
+				
+				
+				if(gottenFileName == null || gottenDuration == null) {
+					// Do Nothing
+				}else {
+					long duration = Long.parseLong(gottenDuration) * 1000;
+					
+					AudioRecorder recorder = new AudioRecorder(gottenFileName,duration);
+				int recordConfirm = JOptionPane.showConfirmDialog(null, "Recording Will Start When You Press Yes. If No Is Pressed Recording Will Cancel","Confirm Recording",JOptionPane.YES_NO_OPTION);
+				
+				if(recordConfirm == 0) {
+					//YES
+					try {
+						recorder.start();
+					} catch (LineUnavailableException | InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}else {
+					JOptionPane.showMessageDialog(null, "Recording Cancelled");
+				}
+				}
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
@@ -170,10 +214,12 @@ public class Authoring {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(btnTestScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnCreateScenario, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-						.addComponent(btnChooseScenario, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnCreateAudioFiles, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(btnTestScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnCreateScenario, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+							.addComponent(btnChooseScenario, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)))
 					.addGap(18)
 					.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
 					.addContainerGap())
@@ -190,6 +236,8 @@ public class Authoring {
 							.addComponent(btnChooseScenario, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 							.addGap(5)
 							.addComponent(btnTestScenario, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnCreateAudioFiles, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())))
 		);
 		frame.getContentPane().setLayout(groupLayout);

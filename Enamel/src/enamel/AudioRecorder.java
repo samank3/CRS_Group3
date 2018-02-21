@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
+import javax.swing.JOptionPane;
 
 public class AudioRecorder {
 	
@@ -67,6 +68,7 @@ public class AudioRecorder {
 		targetDataLine.stop();
 		targetDataLine.close();
 		
+		JOptionPane.showMessageDialog(null, "Recording Complete");
 		System.out.println("Complete");
 		
 	return "";
