@@ -140,7 +140,6 @@ public class Authoring {
 		scenarioReader.setBorder(UIManager.getBorder("FileChooser.listViewBorder"));
 		scenarioReader.setWrapStyleWord(true);
 		scenarioReader.setLineWrap(true);
-		scenarioReader.setEditable(false);
 
 		
 		//JScrollPane scroll = new JScrollPane(scenarioReader);
@@ -175,6 +174,7 @@ public class Authoring {
 				buttonNum = buttons;
 				cellNum = cells;
 				pnlCreateScenarios.setVisible(true);
+				btnTestScenario.setEnabled(true);
 				
 			}
 		});
@@ -185,11 +185,11 @@ public class Authoring {
 		btnTestScenario = new JButton("Test Scenario");
 		btnTestScenario.setEnabled(false);
 		btnTestScenario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e){
 				
 				String fileToCheck;
-				
-				if(!file_chooser.getSelectedFile().toString().isEmpty()) {
+				//System.out.println(file_chooser.getSelectedFile().toString());
+				if(file_chooser.getSelectedFile() != null && !file_chooser.getSelectedFile().toString().isEmpty()) {
 					fileToCheck = file_chooser.getSelectedFile().toString();
 				}else {
 					File currentFile = new File("FactoryScenarios/Scenario_temp.txt");
@@ -254,41 +254,47 @@ public class Authoring {
 		
 		pnlCreateScenarios = new JPanel();
 		pnlCreateScenarios.setVisible(false);
+		
+		JButton btnExportScenario = new JButton("Export Scenario");
+		btnExportScenario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				saveFileDialog();
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(10)
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(btnTestScenario, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btnChooseScenario, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btnCreateScenario, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
-								.addComponent(btnCreateAudioFiles, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(pnlCreateScenarios, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(pnlCreateScenarios, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+						.addComponent(btnCreateScenario, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnCreateAudioFiles, GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+						.addComponent(btnTestScenario, GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+						.addComponent(btnExportScenario, GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+						.addComponent(btnChooseScenario, GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scenarioReader))
+					.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(3)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
-						.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scenarioReader, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 							.addComponent(btnCreateScenario, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-							.addGap(4)
-							.addComponent(btnChooseScenario, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-							.addGap(5)
+							.addGap(9)
+							.addComponent(btnChooseScenario, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnExportScenario, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnTestScenario, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnCreateAudioFiles, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-							.addGap(4)
-							.addComponent(pnlCreateScenarios, GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)))
-					.addGap(0))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(pnlCreateScenarios, GroupLayout.PREFERRED_SIZE, 428, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
 		);
 		pnlCreateScenarios.setLayout(null);
 		
@@ -299,15 +305,15 @@ public class Authoring {
 		pnlCreateScenarios.add(lblScenarioFeatures);
 		
 		JButton btnAddTexttospeech = new JButton("Add Text-to-Speech");
-		btnAddTexttospeech.setBounds(0, 25, 184, 23);
+		btnAddTexttospeech.setBounds(0, 25, 197, 23);
 		pnlCreateScenarios.add(btnAddTexttospeech);
 		
 		JButton btnAddSoundFile = new JButton("Add Sound File");
-		btnAddSoundFile.setBounds(0, 51, 184, 23);
+		btnAddSoundFile.setBounds(0, 51, 197, 23);
 		pnlCreateScenarios.add(btnAddSoundFile);
 		
 		JButton btnAddPause = new JButton("Add Pause");
-		btnAddPause.setBounds(0, 77, 184, 23);
+		btnAddPause.setBounds(0, 77, 197, 23);
 		pnlCreateScenarios.add(btnAddPause);
 		
 		JButton btnDisplayBrailleString = new JButton("Display Braille String");
@@ -320,7 +326,7 @@ public class Authoring {
 				}
 			}
 		});
-		btnDisplayBrailleString.setBounds(0, 102, 184, 23);
+		btnDisplayBrailleString.setBounds(0, 102, 197, 23);
 		pnlCreateScenarios.add(btnDisplayBrailleString);
 		
 		JButton btnAddRepeatString = new JButton("Add Repeat String");
@@ -335,7 +341,7 @@ public class Authoring {
 				}
 			}
 		});
-		btnAddRepeatString.setBounds(0, 127, 184, 23);
+		btnAddRepeatString.setBounds(0, 127, 197, 23);
 		pnlCreateScenarios.add(btnAddRepeatString);
 		
 		JButton btnAddRepeatButton = new JButton("Add Repeat Button");
@@ -350,7 +356,7 @@ public class Authoring {
 				}
 			}
 		});
-		btnAddRepeatButton.setBounds(0, 152, 184, 23);
+		btnAddRepeatButton.setBounds(0, 152, 197, 23);
 		pnlCreateScenarios.add(btnAddRepeatButton);
 		
 		JButton btnAddSkipButton = new JButton("Skip Button");
@@ -378,7 +384,7 @@ public class Authoring {
 				
 			}
 		});
-		btnAddUserInput.setBounds(0, 203, 184, 23);
+		btnAddUserInput.setBounds(0, 203, 197, 23);
 		pnlCreateScenarios.add(btnAddUserInput);
 		
 		JButton btnAddResetButtons = new JButton("Reset Buttons");
@@ -387,7 +393,7 @@ public class Authoring {
 				scenarioReader.append("/~reset-buttons" + "\n");
 			}
 		});
-		btnAddResetButtons.setBounds(0, 228, 184, 23);
+		btnAddResetButtons.setBounds(0, 228, 197, 23);
 		pnlCreateScenarios.add(btnAddResetButtons);
 		
 		JButton btnSkipToClause = new JButton("Add Skip");
@@ -409,7 +415,7 @@ public class Authoring {
 				scenarioReader.append("/~disp-clearAll" + "\n");
 			}
 		});
-		btnClearAllCells.setBounds(0, 279, 184, 23);
+		btnClearAllCells.setBounds(0, 279, 197, 23);
 		pnlCreateScenarios.add(btnClearAllCells);
 		
 		JButton btnClearSpecificCell = new JButton("Clear Specific Cell");
@@ -424,7 +430,7 @@ public class Authoring {
 				}
 			}
 		});
-		btnClearSpecificCell.setBounds(0, 305, 184, 23);
+		btnClearSpecificCell.setBounds(0, 305, 197, 23);
 		pnlCreateScenarios.add(btnClearSpecificCell);
 		
 		JButton btnSetSpecificPin = new JButton("Set Specific Pin");
@@ -443,7 +449,7 @@ public class Authoring {
 				}
 			}
 		});
-		btnSetSpecificPin.setBounds(0, 330, 184, 23);
+		btnSetSpecificPin.setBounds(0, 330, 197, 23);
 		pnlCreateScenarios.add(btnSetSpecificPin);
 		
 		JButton btnDisplayCellCharacter = new JButton("Display Cell Character");
@@ -461,7 +467,7 @@ public class Authoring {
 				}
 			}
 		});
-		btnDisplayCellCharacter.setBounds(0, 355, 184, 23);
+		btnDisplayCellCharacter.setBounds(0, 355, 197, 23);
 		pnlCreateScenarios.add(btnDisplayCellCharacter);
 		
 		JButton btnRaiseOnePin = new JButton("Raise One Pin");
@@ -480,7 +486,7 @@ public class Authoring {
 				}
 			}
 		});
-		btnRaiseOnePin.setBounds(0, 380, 184, 23);
+		btnRaiseOnePin.setBounds(0, 380, 197, 23);
 		pnlCreateScenarios.add(btnRaiseOnePin);
 		
 		JButton btnLowerOnePin = new JButton("Lower One Pin");
@@ -499,7 +505,7 @@ public class Authoring {
 				}
 			}
 		});
-		btnLowerOnePin.setBounds(0, 404, 184, 23);
+		btnLowerOnePin.setBounds(0, 404, 197, 23);
 		pnlCreateScenarios.add(btnLowerOnePin);
 		
 		JButton btnSkipTo = new JButton("Skip To");
@@ -512,7 +518,7 @@ public class Authoring {
 				}
 			}
 		});
-		btnSkipTo.setBounds(109, 177, 75, 23);
+		btnSkipTo.setBounds(101, 177, 96, 23);
 		pnlCreateScenarios.add(btnSkipTo);
 		
 		JButton btnSkipTo_1 = new JButton("Skip To");
@@ -525,7 +531,7 @@ public class Authoring {
 				}
 			}
 		});
-		btnSkipTo_1.setBounds(109, 253, 75, 23);
+		btnSkipTo_1.setBounds(101, 253, 96, 23);
 		pnlCreateScenarios.add(btnSkipTo_1);
 		btnAddPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -544,7 +550,7 @@ public class Authoring {
 				file_chooser.setCurrentDirectory(new File("FactoryScenarios/AudioFiles/"));
 				if(file_chooser.showOpenDialog(btnAddSoundFile) == JFileChooser.APPROVE_OPTION) {
 					fileName = file_chooser.getSelectedFile().getName();
-					scenarioReader.append("/~sound:FactoryScenarios/AudioFiles/" + fileName + "\n");
+					scenarioReader.append("/~sound:" + fileName + "\n");
 				}
 				
 				
@@ -603,6 +609,60 @@ public class Authoring {
 		
 		btnTestScenario.getAccessibleContext().setAccessibleName("Test the Scenario Open");
 		btnTestScenario.getAccessibleContext().setAccessibleDescription("Test the current open scenario file with the visual player");
+		
+		btnAddTexttospeech.getAccessibleContext().setAccessibleName("Add Text to Speech");
+		btnAddTexttospeech.getAccessibleContext().setAccessibleDescription("Add a Text to Speech comment that. This will be spoken by the computer");
+		
+		btnAddSoundFile.getAccessibleContext().setAccessibleName("Add Sound File");
+		btnAddSoundFile.getAccessibleContext().setAccessibleDescription("Add a Sound file that is played when the scenario file is executed at this spot.");
+		
+		btnAddPause.getAccessibleContext().setAccessibleName("Add a Pause");
+		btnAddPause.getAccessibleContext().setAccessibleDescription("Add a pause to your scenario file that lasts a certain seconds.");
+		
+		btnDisplayBrailleString.getAccessibleContext().setAccessibleName("Display Braille String");
+		btnDisplayBrailleString.getAccessibleContext().setAccessibleDescription("Displays a string that is displayed in braille.");
+		
+		btnAddRepeatString.getAccessibleContext().setAccessibleName("Add Repeat String");
+		btnAddRepeatString.getAccessibleContext().setAccessibleDescription("Adds a String that is to be repeated ");
+		
+		btnAddRepeatButton.getAccessibleContext().setAccessibleName("Add Repeat Button");
+		btnAddRepeatButton.getAccessibleContext().setAccessibleDescription("Choose an existing button to repeat");
+		
+		btnAddSkipButton.getAccessibleContext().setAccessibleName("Add Skip Button");
+		btnAddSkipButton.getAccessibleContext().setAccessibleDescription("Choose an existing button to skip and choose an identifier of where to skip to.");
+
+		btnSkipTo.getAccessibleContext().setAccessibleName("Add Skip To Clause");
+		btnSkipTo.getAccessibleContext().setAccessibleDescription("Type an identifier previously chosen when using add skip button");
+		
+		btnAddUserInput.getAccessibleContext().setAccessibleName("Add User Input");
+		btnAddUserInput.getAccessibleContext().setAccessibleDescription("Asks user for input.");
+		
+		btnAddResetButtons.getAccessibleContext().setAccessibleName("Reset Buttons");
+		btnAddResetButtons.getAccessibleContext().setAccessibleDescription("Resets the actions of all buttons that exist for the scenario.");
+		
+		btnSkipToClause.getAccessibleContext().setAccessibleName("Skip To Clause");
+		btnSkipToClause.getAccessibleContext().setAccessibleDescription("Choose an identifier to skip to.");
+		
+		btnSkipTo_1.getAccessibleContext().setAccessibleName("Where to Skip To");
+		btnSkipTo_1.getAccessibleContext().setAccessibleDescription("Type the identifier previously chosen when using Skip to Clause Button");
+		
+		btnClearAllCells.getAccessibleContext().setAccessibleName("Clear All Cells");
+		btnClearAllCells.getAccessibleContext().setAccessibleDescription("Clears All Cells that have been initialized");
+		
+		btnClearSpecificCell.getAccessibleContext().setAccessibleName("Clear Specific Cell");
+		btnClearSpecificCell.getAccessibleContext().setAccessibleDescription("Enter the number of the cell you want to be cleared that is already initialized.");
+		
+		btnSetSpecificPin.getAccessibleContext().setAccessibleName("Set Specific Pin");
+		btnSetSpecificPin.getAccessibleContext().setAccessibleDescription("Sets a specific pin of a cell and provides it with an 8 character sequence.");
+		
+		btnDisplayCellCharacter.getAccessibleContext().setAccessibleName("Display Character in Cell");
+		btnDisplayCellCharacter.getAccessibleContext().setAccessibleDescription("Display english alphabet on specific braille cell.");
+		
+		btnRaiseOnePin.getAccessibleContext().setAccessibleName("Raise One Pin");
+		btnRaiseOnePin.getAccessibleContext().setAccessibleDescription("Raises a specific pin of a Braille Cell");
+		
+		btnLowerOnePin.getAccessibleContext().setAccessibleName("Lower One Pin");
+		btnLowerOnePin.getAccessibleContext().setAccessibleDescription("Lowers a specific pin of a Braille Cell");
 		
 		frame.setVisible(true);
 		
