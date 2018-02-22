@@ -49,8 +49,6 @@ public class Authoring {
 			int lineCounter = 0;
 			try {
 				Scanner scanner = new Scanner(file_chooser.getSelectedFile());
-				//ScenarioParser s = new ScenarioParser(true);
-				//s.setScenarioFile(file_chooser.getSelectedFile().toString());
 				
 				while(scanner.hasNextLine()) {
 					//Check if first two lines follow the specific plan.
@@ -144,7 +142,7 @@ public class Authoring {
 
 		
 		//JScrollPane scroll = new JScrollPane(scenarioReader);
-
+		//example
 		
 		
 		btnChooseScenario.addActionListener(new ActionListener() {
