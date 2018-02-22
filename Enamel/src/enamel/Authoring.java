@@ -26,8 +26,6 @@ import java.awt.Point;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
@@ -41,6 +39,7 @@ public class Authoring {
 	private static JButton btnTestScenario;
 	private static JPanel pnlCreateScenarios;
 	private static int buttonNum;
+	private static int cellNum;
 	
 	private static void openFileDialog() {
 		if(file_chooser.showOpenDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
@@ -174,6 +173,7 @@ public class Authoring {
 				scenarioReader.append("Cell " + cells + "\n");
 				scenarioReader.append("Button " + buttons + "\n");
 				buttonNum = buttons;
+				cellNum = cells;
 				pnlCreateScenarios.setVisible(true);
 				
 			}
@@ -390,31 +390,115 @@ public class Authoring {
 		btnAddResetButtons.setBounds(0, 228, 184, 23);
 		pnlCreateScenarios.add(btnAddResetButtons);
 		
-		JButton btnSkipToClause = new JButton("Skip to Clause");
-		btnSkipToClause.setBounds(0, 253, 184, 23);
+		JButton btnSkipToClause = new JButton("Add Skip");
+		btnSkipToClause.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String identifier = JOptionPane.showInputDialog(null,"Where Do You Want to Skip to? Enter an Identifier.","Where Do You Want to Skip to? Enter an Identifier.",JOptionPane.QUESTION_MESSAGE);
+				
+				if(identifier != null) {
+				scenarioReader.append("/~skip:" + identifier + "\n");
+				}
+			}
+		});
+		btnSkipToClause.setBounds(0, 253, 100, 23);
 		pnlCreateScenarios.add(btnSkipToClause);
 		
 		JButton btnClearAllCells = new JButton("Clear All Cells");
+		btnClearAllCells.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scenarioReader.append("/~disp-clearAll" + "\n");
+			}
+		});
 		btnClearAllCells.setBounds(0, 279, 184, 23);
 		pnlCreateScenarios.add(btnClearAllCells);
 		
 		JButton btnClearSpecificCell = new JButton("Clear Specific Cell");
+		btnClearSpecificCell.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String cellIndex = JOptionPane.showInputDialog(null,"Enter the Cell Number You Want Cleared.","Enter the Cell Number You Want Cleared.",JOptionPane.QUESTION_MESSAGE);
+				
+				if(cellIndex != null && Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= cellNum) {
+				scenarioReader.append("/~disp-clear-cell:" + (Integer.parseInt(cellIndex) -1) + "\n");
+				}else {
+					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists");
+				}
+			}
+		});
 		btnClearSpecificCell.setBounds(0, 305, 184, 23);
 		pnlCreateScenarios.add(btnClearSpecificCell);
 		
 		JButton btnSetSpecificPin = new JButton("Set Specific Pin");
+		btnSetSpecificPin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String cellIndex = JOptionPane.showInputDialog(null,"Enter the Cell Number You Want Displayed.","Enter the Cell Number You Want Displayed.",JOptionPane.QUESTION_MESSAGE);
+				
+				String sequence = JOptionPane.showInputDialog(null,"Enter the 8-Character Sequence Consisting of 0's and 1's.","Enter the  8-Character Sequence Consisting of 0's and 1's.",JOptionPane.QUESTION_MESSAGE);
+				
+				
+				
+				if(cellIndex != null && Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= cellNum && sequence.length() == 8 && sequence.matches("[01]+")) {
+				scenarioReader.append("/~disp-cell-pins:" + (Integer.parseInt(cellIndex) -1) + " " + sequence + "\n");
+				}else {
+					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists and the 8-Character Sequence is Valid.");
+				}
+			}
+		});
 		btnSetSpecificPin.setBounds(0, 330, 184, 23);
 		pnlCreateScenarios.add(btnSetSpecificPin);
 		
 		JButton btnDisplayCellCharacter = new JButton("Display Cell Character");
+		btnDisplayCellCharacter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String cellIndex = JOptionPane.showInputDialog(null,"Enter the Cell Number You Want Displayed.","Enter the Cell Number You Want Displayed.",JOptionPane.QUESTION_MESSAGE);
+				
+				String alphabet = JOptionPane.showInputDialog(null,"Enter a Valid English Alphabet.","Enter a Valid English Alphabet.",JOptionPane.QUESTION_MESSAGE);
+				char c = alphabet.charAt(0);
+				
+				if(cellIndex != null && Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= cellNum && alphabet.length() == 1 && Character.isLetter(c)) {
+				scenarioReader.append("/~disp-cell-char:" + (Integer.parseInt(cellIndex) -1) + " " + alphabet + "\n");
+				}else {
+					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists and a Valid English Alphabet is Selected.");
+				}
+			}
+		});
 		btnDisplayCellCharacter.setBounds(0, 355, 184, 23);
 		pnlCreateScenarios.add(btnDisplayCellCharacter);
 		
 		JButton btnRaiseOnePin = new JButton("Raise One Pin");
+		btnRaiseOnePin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String cellIndex = JOptionPane.showInputDialog(null,"Enter the Cell Number You Want Raised.","Enter the Cell Number You Want Raised.",JOptionPane.QUESTION_MESSAGE);
+				
+				String pinIndex = JOptionPane.showInputDialog(null,"Enter the Pin Number to Raise.","Enter the  Pin Number to Raise.",JOptionPane.QUESTION_MESSAGE);
+				
+				
+				
+				if(cellIndex != null && Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= cellNum && Integer.parseInt(pinIndex) > 0 && Integer.parseInt(pinIndex) <= 8) {
+				scenarioReader.append("/~disp-cell-raise:" + (Integer.parseInt(cellIndex) -1) + " " + (Integer.parseInt(pinIndex) -1) + "\n");
+				}else {
+					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists and the Pin Number is between 1 and 8.");
+				}
+			}
+		});
 		btnRaiseOnePin.setBounds(0, 380, 184, 23);
 		pnlCreateScenarios.add(btnRaiseOnePin);
 		
 		JButton btnLowerOnePin = new JButton("Lower One Pin");
+		btnLowerOnePin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String cellIndex = JOptionPane.showInputDialog(null,"Enter the Cell Number You Want Lowered.","Enter the Cell Number You Want Lowered.",JOptionPane.QUESTION_MESSAGE);
+				
+				String pinIndex = JOptionPane.showInputDialog(null,"Enter the Pin Number to Lower.","Enter the  Pin Number to Lower.",JOptionPane.QUESTION_MESSAGE);
+				
+				
+				
+				if(cellIndex != null && Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= cellNum && Integer.parseInt(pinIndex) > 0 && Integer.parseInt(pinIndex) <= 8) {
+				scenarioReader.append("/~disp-cell-raise:" + (Integer.parseInt(cellIndex) -1) + " " + (Integer.parseInt(pinIndex) -1) + "\n");
+				}else {
+					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists and the Pin Number is between 1 and 8.");
+				}
+			}
+		});
 		btnLowerOnePin.setBounds(0, 404, 184, 23);
 		pnlCreateScenarios.add(btnLowerOnePin);
 		
@@ -430,6 +514,19 @@ public class Authoring {
 		});
 		btnSkipTo.setBounds(109, 177, 75, 23);
 		pnlCreateScenarios.add(btnSkipTo);
+		
+		JButton btnSkipTo_1 = new JButton("Skip To");
+		btnSkipTo_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String identifier = JOptionPane.showInputDialog(null,"Enter Identifier Where to Skip to.","Enter Identifier Where to Skip to.",JOptionPane.QUESTION_MESSAGE);
+				
+				if(identifier != null) {
+				scenarioReader.append("/~" + identifier + "\n");
+				}
+			}
+		});
+		btnSkipTo_1.setBounds(109, 253, 75, 23);
+		pnlCreateScenarios.add(btnSkipTo_1);
 		btnAddPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String pause = JOptionPane.showInputDialog(null,"Enter the Number of Seconds to Pause the Scenario for.","Enter the Number of Seconds to Pause the Scenario for.",JOptionPane.QUESTION_MESSAGE);
