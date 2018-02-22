@@ -26,6 +26,10 @@ import java.awt.Point;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class Authoring {
 	private static JFrame frame;
@@ -35,6 +39,7 @@ public class Authoring {
 	private static JButton btnCreateScenario;
 	private static JButton btnCreateAudioFiles;
 	private static JButton btnTestScenario;
+	private static JPanel pnlCreateScenarios;
 	
 	private static void openFileDialog() {
 		if(file_chooser.showOpenDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
@@ -126,7 +131,7 @@ public class Authoring {
 		file_chooser = new JFileChooser();
 		file_chooser.setCurrentDirectory(new java.io.File("C:"));
 		file_chooser.setDialogTitle("Open Scenario File");
-		btnChooseScenario = new JButton("Edit Scenario");
+		btnChooseScenario = new JButton("Import Scenario");
 		btnChooseScenario.setLocation(new Point(100, 100));
 		btnChooseScenario.setVisible(true);
 		
@@ -167,6 +172,7 @@ public class Authoring {
 				scenarioReader.setText("");
 				scenarioReader.append("Cell " + cells + "\n");
 				scenarioReader.append("Button " + buttons + "\n");
+				pnlCreateScenarios.setVisible(true);
 				
 			}
 		});
@@ -244,77 +250,32 @@ public class Authoring {
 			}
 		});
 		
-		JLabel lblScenarioFeatures = new JLabel("Scenario Features");
-		
-		JButton btnAddTexttospeech = new JButton("Add Text-to-Speech");
-		
-		JButton btnAddSoundFile = new JButton("Add Sound File");
-		
-		JButton btnAddPause = new JButton("Add Pause");
-		
-		JButton btnDisplayBrailleString = new JButton("Display Braille String");
-		
-		JButton btnAddRepeatString = new JButton("Add Repeat String");
-		
-		JButton btnAddRepeatButton = new JButton("Add Repeat Button");
-		
-		JButton btnAddSkipButton = new JButton("Add Skip Button");
-		
-		JButton btnAddUserInput = new JButton("Add User Input");
-		
-		JButton btnAddResetButtons = new JButton("Add Reset Buttons");
-		
-		JButton btnSkipToClause = new JButton("Skip to Clause");
-		
-		JButton btnClearAllCells = new JButton("Clear All Cells");
-		
-		JButton btnClearSpecificCell = new JButton("Clear Specific Cell");
-		
-		JButton btnSetSpecificPin = new JButton("Set Specific Pin");
-		
-		JButton btnDisplayCellCharacter = new JButton("Display Cell Character");
-		
-		JButton btnRaiseOnePin = new JButton("Raise One Pin");
-		
-		JButton btnLowerOnePin = new JButton("Lower One Pin");
+		pnlCreateScenarios = new JPanel();
+		pnlCreateScenarios.setVisible(false);
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-							.addComponent(btnCreateAudioFiles, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnTestScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnCreateScenario, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-							.addComponent(btnChooseScenario, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-							.addComponent(btnLowerOnePin, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnRaiseOnePin, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnDisplayCellCharacter, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnSetSpecificPin, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnClearSpecificCell, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnClearAllCells, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnSkipToClause, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnAddResetButtons, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnAddUserInput, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnAddSkipButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnAddRepeatButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnAddRepeatString, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnDisplayBrailleString, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnAddPause, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblScenarioFeatures)
-							.addComponent(btnAddTexttospeech, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-							.addComponent(btnAddSoundFile, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)))
-					.addGap(33)
-					.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(10)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(btnTestScenario, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnChooseScenario, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnCreateScenario, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+								.addComponent(btnCreateAudioFiles, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(pnlCreateScenarios, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(scenarioReader))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(3)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnCreateScenario, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
 							.addGap(4)
@@ -323,42 +284,113 @@ public class Authoring {
 							.addComponent(btnTestScenario, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnCreateAudioFiles, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-							.addGap(10)
-							.addComponent(lblScenarioFeatures)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnAddTexttospeech)
-							.addGap(7)
-							.addComponent(btnAddSoundFile)
-							.addGap(5)
-							.addComponent(btnAddPause)
-							.addGap(5)
-							.addComponent(btnDisplayBrailleString)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnAddRepeatString)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnAddRepeatButton)
-							.addGap(7)
-							.addComponent(btnAddSkipButton)
 							.addGap(4)
-							.addComponent(btnAddUserInput)
-							.addGap(4)
-							.addComponent(btnAddResetButtons)
-							.addGap(4)
-							.addComponent(btnSkipToClause)
-							.addGap(5)
-							.addComponent(btnClearAllCells)
-							.addGap(4)
-							.addComponent(btnClearSpecificCell)
-							.addGap(5)
-							.addComponent(btnSetSpecificPin)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnDisplayCellCharacter)
-							.addGap(5)
-							.addComponent(btnRaiseOnePin)
-							.addGap(4)
-							.addComponent(btnLowerOnePin)
-							.addContainerGap())))
+							.addComponent(pnlCreateScenarios, GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)))
+					.addGap(0))
 		);
+		pnlCreateScenarios.setLayout(null);
+		
+		JLabel lblScenarioFeatures = new JLabel("Scenario Features");
+		lblScenarioFeatures.setHorizontalAlignment(SwingConstants.CENTER);
+		lblScenarioFeatures.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblScenarioFeatures.setBounds(0, 0, 197, 29);
+		pnlCreateScenarios.add(lblScenarioFeatures);
+		
+		JButton btnAddTexttospeech = new JButton("Add Text-to-Speech");
+		btnAddTexttospeech.setBounds(0, 25, 184, 23);
+		pnlCreateScenarios.add(btnAddTexttospeech);
+		
+		JButton btnAddSoundFile = new JButton("Add Sound File");
+		btnAddSoundFile.setBounds(0, 51, 184, 23);
+		pnlCreateScenarios.add(btnAddSoundFile);
+		
+		JButton btnAddPause = new JButton("Add Pause");
+		btnAddPause.setBounds(0, 77, 184, 23);
+		pnlCreateScenarios.add(btnAddPause);
+		
+		JButton btnDisplayBrailleString = new JButton("Display Braille String");
+		btnDisplayBrailleString.setBounds(0, 102, 184, 23);
+		pnlCreateScenarios.add(btnDisplayBrailleString);
+		
+		JButton btnAddRepeatString = new JButton("Add Repeat String");
+		btnAddRepeatString.setBounds(0, 127, 184, 23);
+		pnlCreateScenarios.add(btnAddRepeatString);
+		
+		JButton btnAddRepeatButton = new JButton("Add Repeat Button");
+		btnAddRepeatButton.setBounds(0, 152, 184, 23);
+		pnlCreateScenarios.add(btnAddRepeatButton);
+		
+		JButton btnAddSkipButton = new JButton("Add Skip Button");
+		btnAddSkipButton.setBounds(0, 177, 184, 23);
+		pnlCreateScenarios.add(btnAddSkipButton);
+		
+		JButton btnAddUserInput = new JButton("Add User Input");
+		btnAddUserInput.setBounds(0, 203, 184, 23);
+		pnlCreateScenarios.add(btnAddUserInput);
+		
+		JButton btnAddResetButtons = new JButton("Add Reset Buttons");
+		btnAddResetButtons.setBounds(0, 228, 184, 23);
+		pnlCreateScenarios.add(btnAddResetButtons);
+		
+		JButton btnSkipToClause = new JButton("Skip to Clause");
+		btnSkipToClause.setBounds(0, 253, 184, 23);
+		pnlCreateScenarios.add(btnSkipToClause);
+		
+		JButton btnClearAllCells = new JButton("Clear All Cells");
+		btnClearAllCells.setBounds(0, 279, 184, 23);
+		pnlCreateScenarios.add(btnClearAllCells);
+		
+		JButton btnClearSpecificCell = new JButton("Clear Specific Cell");
+		btnClearSpecificCell.setBounds(0, 305, 184, 23);
+		pnlCreateScenarios.add(btnClearSpecificCell);
+		
+		JButton btnSetSpecificPin = new JButton("Set Specific Pin");
+		btnSetSpecificPin.setBounds(0, 330, 184, 23);
+		pnlCreateScenarios.add(btnSetSpecificPin);
+		
+		JButton btnDisplayCellCharacter = new JButton("Display Cell Character");
+		btnDisplayCellCharacter.setBounds(0, 355, 184, 23);
+		pnlCreateScenarios.add(btnDisplayCellCharacter);
+		
+		JButton btnRaiseOnePin = new JButton("Raise One Pin");
+		btnRaiseOnePin.setBounds(0, 380, 184, 23);
+		pnlCreateScenarios.add(btnRaiseOnePin);
+		
+		JButton btnLowerOnePin = new JButton("Lower One Pin");
+		btnLowerOnePin.setBounds(0, 404, 184, 23);
+		pnlCreateScenarios.add(btnLowerOnePin);
+		btnAddPause.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String pause = JOptionPane.showInputDialog(null,"Enter the Number of Seconds to Pause the Scenario for.","Enter the Number of Seconds to Pause the Scenario for.",JOptionPane.QUESTION_MESSAGE);
+				
+				if(pause != null && Integer.parseInt(pause) >= 0) {
+				scenarioReader.append("/~pause:" + pause + "\n");
+				}else {
+					JOptionPane.showMessageDialog(null, "Error, Please Make Sure Pause Time Is Greater Than 0 Seconds.");
+				}
+			}
+		});
+		btnAddSoundFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String fileName = "";// = JOptionPane.showInputDialog(null,"Enter the Text You Want Said Via Text-To-Speech.","Enter the Text You Want Said Via Text-To-Speech",JOptionPane.QUESTION_MESSAGE);
+				file_chooser.setCurrentDirectory(new File("FactoryScenarios/AudioFiles/"));
+				if(file_chooser.showOpenDialog(btnAddSoundFile) == JFileChooser.APPROVE_OPTION) {
+					fileName = file_chooser.getSelectedFile().getName();
+					scenarioReader.append("/~sound:FactoryScenarios/AudioFiles/" + fileName + "\n");
+				}
+				
+				
+			}
+		});
+		btnAddTexttospeech.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String textToSpeech = JOptionPane.showInputDialog(null,"Enter the Text You Want Said Via Text-To-Speech.","Enter the Text You Want Said Via Text-To-Speech",JOptionPane.QUESTION_MESSAGE);
+				
+				if(textToSpeech != null) {
+				scenarioReader.append(textToSpeech + "\n");
+				}
+			}
+		});
 		frame.getContentPane().setLayout(groupLayout);
 		scenarioReader.setVisible(true);
 		JMenuBar menuBar = new JMenuBar();
