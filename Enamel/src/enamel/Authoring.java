@@ -24,6 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import java.awt.Point;
 import java.awt.Dimension;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 public class Authoring {
 	private static JFrame frame;
@@ -116,7 +118,7 @@ public class Authoring {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		frame = new JFrame();
-		frame.setBounds(100,100,648,428);
+		frame.setBounds(100,100,661,696);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//frame.setVisible(true);
 		frame.setTitle("Authoring Application");
@@ -155,6 +157,17 @@ public class Authoring {
 		btnCreateScenario = new JButton("Create Scenario");
 		btnCreateScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				String gottenCells = JOptionPane.showInputDialog(null,"Enter Number of Braille Cells to Use","Enter Number of Braille Cells to Use",JOptionPane.QUESTION_MESSAGE);
+				String gottenButtons = JOptionPane.showInputDialog(null,"Enter Number of Buttons to Use","Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
+				
+				int cells = Integer.parseInt(gottenCells);
+				int buttons = Integer.parseInt(gottenButtons);
+				
+				scenarioReader.setText("");
+				scenarioReader.append("Cell " + cells + "\n");
+				scenarioReader.append("Button " + buttons + "\n");
+				
 			}
 		});
 		btnCreateScenario.setPreferredSize(new Dimension(95, 23));
@@ -201,8 +214,8 @@ public class Authoring {
 		btnCreateAudioFiles = new JButton("Create Audio File");
 		btnCreateAudioFiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String gottenFileName = JOptionPane.showInputDialog(null,"Enter Name of Audio File to Create","Create Audio File",JOptionPane.QUESTION_MESSAGE);
-				String gottenDuration = JOptionPane.showInputDialog(null,"Enter The Duration of the Audio File in Seconds","Create Audio File",JOptionPane.QUESTION_MESSAGE);
+				String gottenFileName = JOptionPane.showInputDialog(null,"Enter Name of Audio File to Create","Enter Name of Audio File to Create",JOptionPane.QUESTION_MESSAGE);
+				String gottenDuration = JOptionPane.showInputDialog(null,"Enter The Duration of the Audio File in Seconds","Enter The Duration of the Audio File in Seconds",JOptionPane.QUESTION_MESSAGE);
 				
 				
 				
@@ -214,7 +227,7 @@ public class Authoring {
 					long duration = Long.parseLong(gottenDuration) * 1000;
 					
 					AudioRecorder recorder = new AudioRecorder(gottenFileName,duration);
-				int recordConfirm = JOptionPane.showConfirmDialog(null, "Recording Will Start When You Press Yes. If No Is Pressed Recording Will Cancel","Confirm Recording",JOptionPane.YES_NO_OPTION);
+				int recordConfirm = JOptionPane.showConfirmDialog(null, "Recording Will Start When You Press Yes. If No Is Pressed Recording Will Cancel","Recording Will Start When You Press Yes. If No Is Pressed Recording Will Cancel",JOptionPane.YES_NO_OPTION);
 				
 				if(recordConfirm == 0) {
 					//YES
@@ -230,27 +243,78 @@ public class Authoring {
 				}
 			}
 		});
+		
+		JLabel lblScenarioFeatures = new JLabel("Scenario Features");
+		
+		JButton btnAddTexttospeech = new JButton("Add Text-to-Speech");
+		
+		JButton btnAddSoundFile = new JButton("Add Sound File");
+		
+		JButton btnAddPause = new JButton("Add Pause");
+		
+		JButton btnDisplayBrailleString = new JButton("Display Braille String");
+		
+		JButton btnAddRepeatString = new JButton("Add Repeat String");
+		
+		JButton btnAddRepeatButton = new JButton("Add Repeat Button");
+		
+		JButton btnAddSkipButton = new JButton("Add Skip Button");
+		
+		JButton btnAddUserInput = new JButton("Add User Input");
+		
+		JButton btnAddResetButtons = new JButton("Add Reset Buttons");
+		
+		JButton btnSkipToClause = new JButton("Skip to Clause");
+		
+		JButton btnClearAllCells = new JButton("Clear All Cells");
+		
+		JButton btnClearSpecificCell = new JButton("Clear Specific Cell");
+		
+		JButton btnSetSpecificPin = new JButton("Set Specific Pin");
+		
+		JButton btnDisplayCellCharacter = new JButton("Display Cell Character");
+		
+		JButton btnRaiseOnePin = new JButton("Raise One Pin");
+		
+		JButton btnLowerOnePin = new JButton("Lower One Pin");
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnCreateAudioFiles, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(btnCreateAudioFiles, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(btnTestScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(btnCreateScenario, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-							.addComponent(btnChooseScenario, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)))
-					.addGap(18)
-					.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
-					.addContainerGap())
+							.addComponent(btnChooseScenario, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(btnLowerOnePin, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnRaiseOnePin, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnDisplayCellCharacter, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnSetSpecificPin, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnClearSpecificCell, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnClearAllCells, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnSkipToClause, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnAddResetButtons, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnAddUserInput, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnAddSkipButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnAddRepeatButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnAddRepeatString, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnDisplayBrailleString, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnAddPause, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(lblScenarioFeatures)
+							.addComponent(btnAddTexttospeech, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+							.addComponent(btnAddSoundFile, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)))
+					.addGap(33)
+					.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(3)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+						.addComponent(scenarioReader, GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnCreateScenario, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
 							.addGap(4)
@@ -259,6 +323,40 @@ public class Authoring {
 							.addComponent(btnTestScenario, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnCreateAudioFiles, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(lblScenarioFeatures)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnAddTexttospeech)
+							.addGap(7)
+							.addComponent(btnAddSoundFile)
+							.addGap(5)
+							.addComponent(btnAddPause)
+							.addGap(5)
+							.addComponent(btnDisplayBrailleString)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnAddRepeatString)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnAddRepeatButton)
+							.addGap(7)
+							.addComponent(btnAddSkipButton)
+							.addGap(4)
+							.addComponent(btnAddUserInput)
+							.addGap(4)
+							.addComponent(btnAddResetButtons)
+							.addGap(4)
+							.addComponent(btnSkipToClause)
+							.addGap(5)
+							.addComponent(btnClearAllCells)
+							.addGap(4)
+							.addComponent(btnClearSpecificCell)
+							.addGap(5)
+							.addComponent(btnSetSpecificPin)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnDisplayCellCharacter)
+							.addGap(5)
+							.addComponent(btnRaiseOnePin)
+							.addGap(4)
+							.addComponent(btnLowerOnePin)
 							.addContainerGap())))
 		);
 		frame.getContentPane().setLayout(groupLayout);
