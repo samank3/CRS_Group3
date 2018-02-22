@@ -40,6 +40,7 @@ public class Authoring {
 	private static JButton btnCreateAudioFiles;
 	private static JButton btnTestScenario;
 	private static JPanel pnlCreateScenarios;
+	private static int buttonNum;
 	
 	private static void openFileDialog() {
 		if(file_chooser.showOpenDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
@@ -172,6 +173,7 @@ public class Authoring {
 				scenarioReader.setText("");
 				scenarioReader.append("Cell " + cells + "\n");
 				scenarioReader.append("Button " + buttons + "\n");
+				buttonNum = buttons;
 				pnlCreateScenarios.setVisible(true);
 				
 			}
@@ -309,26 +311,82 @@ public class Authoring {
 		pnlCreateScenarios.add(btnAddPause);
 		
 		JButton btnDisplayBrailleString = new JButton("Display Braille String");
+		btnDisplayBrailleString.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String brailleString = JOptionPane.showInputDialog(null,"Enter the String to be Displayed In Braille.","Enter the String to be Displayed in Braille.",JOptionPane.QUESTION_MESSAGE);
+				
+				if(brailleString != null) {
+				scenarioReader.append("/~disp-string:" + brailleString + "\n");
+				}
+			}
+		});
 		btnDisplayBrailleString.setBounds(0, 102, 184, 23);
 		pnlCreateScenarios.add(btnDisplayBrailleString);
 		
 		JButton btnAddRepeatString = new JButton("Add Repeat String");
+		btnAddRepeatString.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String textToRepeat = JOptionPane.showInputDialog(null,"Enter the Text to Repeat.","Enter the Text to Repeat.",JOptionPane.QUESTION_MESSAGE);
+				
+				if(textToRepeat != null) {
+				scenarioReader.append("/~repeat" + "\n");
+				scenarioReader.append(textToRepeat  + "\n");
+				scenarioReader.append("/~endrepeat" + "\n");
+				}
+			}
+		});
 		btnAddRepeatString.setBounds(0, 127, 184, 23);
 		pnlCreateScenarios.add(btnAddRepeatString);
 		
 		JButton btnAddRepeatButton = new JButton("Add Repeat Button");
+		btnAddRepeatButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String buttonIndex = JOptionPane.showInputDialog(null,"Enter the Button Number You Want Repeated.","Enter the Button Number You Want Repeated.",JOptionPane.QUESTION_MESSAGE);
+				
+				if(buttonIndex != null && Integer.parseInt(buttonIndex) > 0 && Integer.parseInt(buttonIndex) <= buttonNum) {
+				scenarioReader.append("/~repeat-button:" + (Integer.parseInt(buttonIndex) -1) + "\n");
+				}else {
+					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Button Number Is Valid And Exists");
+				}
+			}
+		});
 		btnAddRepeatButton.setBounds(0, 152, 184, 23);
 		pnlCreateScenarios.add(btnAddRepeatButton);
 		
-		JButton btnAddSkipButton = new JButton("Add Skip Button");
-		btnAddSkipButton.setBounds(0, 177, 184, 23);
+		JButton btnAddSkipButton = new JButton("Skip Button");
+		btnAddSkipButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String buttonIndex = JOptionPane.showInputDialog(null,"Enter the Button Number You Want Skipped.","Enter the Button Number You Want Skipped.",JOptionPane.QUESTION_MESSAGE);
+				String identifier = JOptionPane.showInputDialog(null,"Where Do You Want to Skip to? Enter an Identifier.", "Where Do You Want to Skip to? Enter an Indentifier.",JOptionPane.QUESTION_MESSAGE);
+				
+				
+				if(buttonIndex != null && Integer.parseInt(buttonIndex) > 0 && Integer.parseInt(buttonIndex) <= buttonNum) {
+				scenarioReader.append("/~skip-button:" + (Integer.parseInt(buttonIndex) -1) + " " + identifier + "\n");
+				}else {
+					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Button Number Is Valid And Exists");
+				}
+			}
+		});
+		btnAddSkipButton.setBounds(0, 177, 100, 23);
 		pnlCreateScenarios.add(btnAddSkipButton);
 		
 		JButton btnAddUserInput = new JButton("Add User Input");
+		btnAddUserInput.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				scenarioReader.append("/~user-input" + "\n");
+				
+			}
+		});
 		btnAddUserInput.setBounds(0, 203, 184, 23);
 		pnlCreateScenarios.add(btnAddUserInput);
 		
-		JButton btnAddResetButtons = new JButton("Add Reset Buttons");
+		JButton btnAddResetButtons = new JButton("Reset Buttons");
+		btnAddResetButtons.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scenarioReader.append("/~reset-buttons" + "\n");
+			}
+		});
 		btnAddResetButtons.setBounds(0, 228, 184, 23);
 		pnlCreateScenarios.add(btnAddResetButtons);
 		
@@ -359,6 +417,19 @@ public class Authoring {
 		JButton btnLowerOnePin = new JButton("Lower One Pin");
 		btnLowerOnePin.setBounds(0, 404, 184, 23);
 		pnlCreateScenarios.add(btnLowerOnePin);
+		
+		JButton btnSkipTo = new JButton("Skip To");
+		btnSkipTo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String identifier = JOptionPane.showInputDialog(null,"Enter the Identifier You Previously Used.","Enter the Identifier You Previously Used.",JOptionPane.QUESTION_MESSAGE);
+				
+				if(identifier != null) {
+				scenarioReader.append("/~" + identifier + "\n");
+				}
+			}
+		});
+		btnSkipTo.setBounds(109, 177, 75, 23);
+		pnlCreateScenarios.add(btnSkipTo);
 		btnAddPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String pause = JOptionPane.showInputDialog(null,"Enter the Number of Seconds to Pause the Scenario for.","Enter the Number of Seconds to Pause the Scenario for.",JOptionPane.QUESTION_MESSAGE);
