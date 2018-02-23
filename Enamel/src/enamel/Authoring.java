@@ -17,6 +17,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
+
+import java.awt.Color;
 import java.awt.ComponentOrientation;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -157,6 +159,7 @@ public class Authoring {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		frame = new JFrame();
+		frame.getContentPane().setBackground(new java.awt.Color(180, 225, 255));
 		frame.setBounds(100, 100, 661, 696);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// frame.setVisible(true);
@@ -167,10 +170,12 @@ public class Authoring {
 		file_chooser.setCurrentDirectory(new java.io.File("C:"));
 		file_chooser.setDialogTitle("Open Scenario File");
 		btnChooseScenario = new JButton("Import Scenario");
+		btnChooseScenario.setBackground(new java.awt.Color(255, 226, 226));
 		btnChooseScenario.setLocation(new Point(100, 100));
 		btnChooseScenario.setVisible(true);
 
 		scenarioReader = new JTextArea();
+		scenarioReader.setBackground(new java.awt.Color(242, 251, 255));
 		scenarioReader.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		scenarioReader.setBorder(UIManager.getBorder("FileChooser.listViewBorder"));
 		scenarioReader.setWrapStyleWord(true);
@@ -188,6 +193,7 @@ public class Authoring {
 		});
 
 		btnCreateScenario = new JButton("Create Scenario");
+		btnCreateScenario.setBackground(new java.awt.Color(255, 226, 226));
 		btnCreateScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				file_chooser.setSelectedFile(null);
@@ -215,6 +221,7 @@ public class Authoring {
 		btnCreateScenario.setMaximumSize(new Dimension(95, 23));
 
 		btnTestScenario = new JButton("Test Scenario");
+		btnTestScenario.setBackground(new java.awt.Color(255, 226, 226));
 		btnTestScenario.setEnabled(false);
 		btnTestScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -252,6 +259,7 @@ public class Authoring {
 		});
 
 		btnCreateAudioFiles = new JButton("Create Audio File");
+		btnCreateAudioFiles.setBackground(new java.awt.Color(255, 226, 226));
 		btnCreateAudioFiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String gottenFileName = JOptionPane.showInputDialog(null, "Enter Name of Audio File to Create",
@@ -287,9 +295,11 @@ public class Authoring {
 		});
 
 		pnlCreateScenarios = new JPanel();
+		pnlCreateScenarios.setBackground(new java.awt.Color(180, 225, 255));
 		pnlCreateScenarios.setVisible(false);
 
 		JButton btnExportScenario = new JButton("Export Scenario");
+		btnExportScenario.setBackground(new java.awt.Color(255, 226, 226));
 		btnExportScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveFileDialog();
