@@ -63,6 +63,7 @@ public class Authoring {
 
 	
 	public static boolean openFileDialog() {
+		file_chooser.setDialogTitle("Open Scenario File");
 		if (file_chooser.showOpenDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
 
 			StringBuffer buff = new StringBuffer();
@@ -128,6 +129,7 @@ public class Authoring {
 	}
 	
 	public static boolean saveFileDialog() {
+		file_chooser.setDialogTitle("Save Scenario File");
 		if (file_chooser.showSaveDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
 			File currentFile = file_chooser.getSelectedFile();
 
