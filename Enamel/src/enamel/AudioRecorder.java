@@ -50,7 +50,8 @@ public class AudioRecorder {
 				// TODO Auto-generated method stub
 				AudioInputStream audioStream = new AudioInputStream(targetDataLine);
 				
-				File wavFile = new File("FactoryScenarios/AudioFiles/" + fileName);
+				//File wavFile = new File("FactoryScenarios/AudioFiles/" + fileName);
+				File wavFile = new File(fileName);
 				try {
 					AudioSystem.write(audioStream, AudioFileFormat.Type.WAVE, wavFile);
 				} catch (IOException e) {
