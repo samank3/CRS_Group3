@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -130,5 +131,30 @@ public class AuthoringTest {
 		File testFile = new File("FactoryScenarios/AudioFiles/tester1212.wav");
 		assertEquals(true,testFile.exists());
 	}
+	
+	//Tests the following scenario:
+		/*
+		 * A script was created using Authoring.java and exported as "MyExample.txt".
+		 * This method tests to see if the Authoring app has created the correct script for the following commands:
+		 * Cell:6, Button: 4, Display string "hello", Repeat button "2", Skip button "2" to "3", Pause for 5 seconds, Clear all cells
+		 * "MyExample.txt" is then compared with the expected output 
+		 */
+		@Test
+		void testSavedFile() throws FileNotFoundException {
+			
+			Scanner in = new Scanner(new FileReader("FactoryScenarios/MyExample.txt"));
+			StringBuilder sb = new StringBuilder();
+			while(in.hasNext()) {
+			    sb.append(in.next());
+			}
+			in.close();
+			String outString = sb.toString();
+			
+			String expected = "Cell6Button4/~disp-string:hello/~repeat-button:2/~skip-button:02/~skip:3/~pause:5/~disp-clearAll";
+					
+			assertEquals(expected, outString);
+			
+		}
+
 
 }
