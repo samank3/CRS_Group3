@@ -1,6 +1,6 @@
 package enamel;
 
-<<<<<<< HEAD
+
 import static org.junit.Assert.*;
 
 import java.io.File;
@@ -76,22 +76,3 @@ public class AuthoringTest {
 	
 
 }
-=======
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-class AuthoringTest {
-
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
-
-}
->>>>>>> 74503419b39f3fb71392dd6ae1ad1abc67ae65d5
