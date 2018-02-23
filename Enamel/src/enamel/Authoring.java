@@ -32,17 +32,36 @@ import javax.swing.SwingConstants;
 public class Authoring {
 	private static JFrame frame;
 	public static JButton btnChooseScenario;
-	public static JFileChooser file_chooser;
+	public static  JFileChooser file_chooser;
 	public static JFileChooser sound_chooser;
 	public static JTextArea scenarioReader;
 	public static JButton btnCreateScenario;
 	public static JButton btnCreateAudioFiles;
 	public static JButton btnTestScenario;
+	public static JButton btnAddTexttospeech;
+	public static JButton btnAddSoundFile;
+	public static JButton btnAddPause;
+	public static JButton btnDisplayBrailleString;
+	public static JButton btnAddRepeatString;
+	public static JButton btnAddRepeatButton;
+	public static JButton btnAddSkipButton;
+	public static JButton btnAddUserInput;
+	public static JButton btnAddResetButtons;
+	public static JButton btnSkipToClause;
+	public static JButton btnClearAllCells;
+	public static JButton btnClearSpecificCell;
+	public static JButton btnSetSpecificPin;
+	public static JButton btnDisplayCellCharacter;
+	public static JButton btnRaiseOnePin;
+	public static JButton btnLowerOnePin;
+	public static JButton btnSkipTo;
+	public static JButton btnSkipTo_1;
 	private static JPanel pnlCreateScenarios;
 	private static int buttonNum;
 	private static int cellNum;
 	public static boolean testResult;
 
+	
 	public static boolean openFileDialog() {
 		if (file_chooser.showOpenDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
 
@@ -98,6 +117,16 @@ public class Authoring {
 		return true;
 	}
 
+	public static void testCreateScenarios() {
+		scenarioReader.setText("");
+		scenarioReader.append("Cell " + 1 + "\n");
+		scenarioReader.append("Button " + 4 + "\n");
+	}
+	
+	public static void addUserInputString() {
+		scenarioReader.append("/~user-input" + "\n");
+	}
+	
 	public static boolean saveFileDialog() {
 		if (file_chooser.showSaveDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
 			File currentFile = file_chooser.getSelectedFile();
@@ -312,19 +341,19 @@ public class Authoring {
 		lblScenarioFeatures.setBounds(0, 0, 197, 29);
 		pnlCreateScenarios.add(lblScenarioFeatures);
 
-		JButton btnAddTexttospeech = new JButton("Add Text-to-Speech");
+		btnAddTexttospeech = new JButton("Add Text-to-Speech");
 		btnAddTexttospeech.setBounds(0, 25, 197, 23);
 		pnlCreateScenarios.add(btnAddTexttospeech);
 
-		JButton btnAddSoundFile = new JButton("Add Sound File");
+		btnAddSoundFile = new JButton("Add Sound File");
 		btnAddSoundFile.setBounds(0, 51, 197, 23);
 		pnlCreateScenarios.add(btnAddSoundFile);
 
-		JButton btnAddPause = new JButton("Add Pause");
+		btnAddPause = new JButton("Add Pause");
 		btnAddPause.setBounds(0, 77, 197, 23);
 		pnlCreateScenarios.add(btnAddPause);
 
-		JButton btnDisplayBrailleString = new JButton("Display Braille String");
+		btnDisplayBrailleString = new JButton("Display Braille String");
 		btnDisplayBrailleString.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String brailleString = JOptionPane.showInputDialog(null, "Enter the String to be Displayed In Braille.",
@@ -338,7 +367,7 @@ public class Authoring {
 		btnDisplayBrailleString.setBounds(0, 102, 197, 23);
 		pnlCreateScenarios.add(btnDisplayBrailleString);
 
-		JButton btnAddRepeatString = new JButton("Add Repeat String");
+		btnAddRepeatString = new JButton("Add Repeat String");
 		btnAddRepeatString.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String textToRepeat = JOptionPane.showInputDialog(null, "Enter the Text to Repeat.",
@@ -354,7 +383,7 @@ public class Authoring {
 		btnAddRepeatString.setBounds(0, 127, 197, 23);
 		pnlCreateScenarios.add(btnAddRepeatString);
 
-		JButton btnAddRepeatButton = new JButton("Add Repeat Button");
+		btnAddRepeatButton = new JButton("Add Repeat Button");
 		btnAddRepeatButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String buttonIndex = JOptionPane.showInputDialog(null, "Enter the Button Number You Want Repeated.",
@@ -372,7 +401,7 @@ public class Authoring {
 		btnAddRepeatButton.setBounds(0, 152, 197, 23);
 		pnlCreateScenarios.add(btnAddRepeatButton);
 
-		JButton btnAddSkipButton = new JButton("Skip Button");
+		btnAddSkipButton = new JButton("Skip Button");
 		btnAddSkipButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String buttonIndex = JOptionPane.showInputDialog(null, "Enter the Button Number You Want Skipped.",
@@ -394,18 +423,18 @@ public class Authoring {
 		btnAddSkipButton.setBounds(0, 177, 100, 23);
 		pnlCreateScenarios.add(btnAddSkipButton);
 
-		JButton btnAddUserInput = new JButton("Add User Input");
+		btnAddUserInput = new JButton("Add User Input");
 		btnAddUserInput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				scenarioReader.append("/~user-input" + "\n");
+				addUserInputString();
+				//scenarioReader.append("/~user-input" + "\n");
 
 			}
 		});
 		btnAddUserInput.setBounds(0, 203, 197, 23);
 		pnlCreateScenarios.add(btnAddUserInput);
 
-		JButton btnAddResetButtons = new JButton("Reset Buttons");
+		btnAddResetButtons = new JButton("Reset Buttons");
 		btnAddResetButtons.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scenarioReader.append("/~reset-buttons" + "\n");
@@ -414,7 +443,7 @@ public class Authoring {
 		btnAddResetButtons.setBounds(0, 228, 197, 23);
 		pnlCreateScenarios.add(btnAddResetButtons);
 
-		JButton btnSkipToClause = new JButton("Add Skip");
+		btnSkipToClause = new JButton("Add Skip");
 		btnSkipToClause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String identifier = JOptionPane.showInputDialog(null,
@@ -429,7 +458,7 @@ public class Authoring {
 		btnSkipToClause.setBounds(0, 253, 100, 23);
 		pnlCreateScenarios.add(btnSkipToClause);
 
-		JButton btnClearAllCells = new JButton("Clear All Cells");
+		btnClearAllCells = new JButton("Clear All Cells");
 		btnClearAllCells.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scenarioReader.append("/~disp-clearAll" + "\n");
@@ -438,7 +467,7 @@ public class Authoring {
 		btnClearAllCells.setBounds(0, 279, 197, 23);
 		pnlCreateScenarios.add(btnClearAllCells);
 
-		JButton btnClearSpecificCell = new JButton("Clear Specific Cell");
+		btnClearSpecificCell = new JButton("Clear Specific Cell");
 		btnClearSpecificCell.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String cellIndex = JOptionPane.showInputDialog(null, "Enter the Cell Number You Want Cleared.",
@@ -454,7 +483,7 @@ public class Authoring {
 		btnClearSpecificCell.setBounds(0, 305, 197, 23);
 		pnlCreateScenarios.add(btnClearSpecificCell);
 
-		JButton btnSetSpecificPin = new JButton("Set Specific Pin");
+		btnSetSpecificPin = new JButton("Set Specific Pin");
 		btnSetSpecificPin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String cellIndex = JOptionPane.showInputDialog(null, "Enter the Cell Number You Want Displayed.",
@@ -477,7 +506,7 @@ public class Authoring {
 		btnSetSpecificPin.setBounds(0, 330, 197, 23);
 		pnlCreateScenarios.add(btnSetSpecificPin);
 
-		JButton btnDisplayCellCharacter = new JButton("Display Cell Character");
+		btnDisplayCellCharacter = new JButton("Display Cell Character");
 		btnDisplayCellCharacter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String cellIndex = JOptionPane.showInputDialog(null, "Enter the Cell Number You Want Displayed.",
@@ -500,7 +529,7 @@ public class Authoring {
 		btnDisplayCellCharacter.setBounds(0, 355, 197, 23);
 		pnlCreateScenarios.add(btnDisplayCellCharacter);
 
-		JButton btnRaiseOnePin = new JButton("Raise One Pin");
+		btnRaiseOnePin = new JButton("Raise One Pin");
 		btnRaiseOnePin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String cellIndex = JOptionPane.showInputDialog(null, "Enter the Cell Number You Want Raised.",
@@ -522,7 +551,7 @@ public class Authoring {
 		btnRaiseOnePin.setBounds(0, 380, 197, 23);
 		pnlCreateScenarios.add(btnRaiseOnePin);
 
-		JButton btnLowerOnePin = new JButton("Lower One Pin");
+		btnLowerOnePin = new JButton("Lower One Pin");
 		btnLowerOnePin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String cellIndex = JOptionPane.showInputDialog(null, "Enter the Cell Number You Want Lowered.",
@@ -544,7 +573,7 @@ public class Authoring {
 		btnLowerOnePin.setBounds(0, 404, 197, 23);
 		pnlCreateScenarios.add(btnLowerOnePin);
 
-		JButton btnSkipTo = new JButton("Skip To");
+		btnSkipTo = new JButton("Skip To");
 		btnSkipTo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String identifier = JOptionPane.showInputDialog(null, "Enter the Identifier You Previously Used.",
@@ -558,7 +587,7 @@ public class Authoring {
 		btnSkipTo.setBounds(101, 177, 96, 23);
 		pnlCreateScenarios.add(btnSkipTo);
 
-		JButton btnSkipTo_1 = new JButton("Skip To");
+		btnSkipTo_1 = new JButton("Skip To");
 		btnSkipTo_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String identifier = JOptionPane.showInputDialog(null, "Enter Identifier Where to Skip to.",
