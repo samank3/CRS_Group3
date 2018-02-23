@@ -19,7 +19,6 @@ import org.junit.Test;
 
 public class AuthoringTest {
 
-
 	@Before
 	public void setUp() throws Exception {
 	}
@@ -122,39 +121,39 @@ public class AuthoringTest {
 		assertEquals(result, true);
 
 	}
-	
+
 	@Test
 	public void testAudioCreation() throws LineUnavailableException, InterruptedException {
-		//Last Test
+		// Last Test
 		AudioRecorder recorder = new AudioRecorder("tester1212", 1);
 		recorder.start();
 		File testFile = new File("FactoryScenarios/AudioFiles/tester1212.wav");
-		assertEquals(true,testFile.exists());
+		assertEquals(true, testFile.exists());
 	}
-	
-	//Tests the following scenario:
-		/*
-		 * A script was created using Authoring.java and exported as "MyExample.txt".
-		 * This method tests to see if the Authoring app has created the correct script for the following commands:
-		 * Cell:6, Button: 4, Display string "hello", Repeat button "2", Skip button "2" to "3", Pause for 5 seconds, Clear all cells
-		 * "MyExample.txt" is then compared with the expected output 
-		 */
-		@Test
-		void testSavedFile() throws FileNotFoundException {
-			
-			Scanner in = new Scanner(new FileReader("FactoryScenarios/MyExample.txt"));
-			StringBuilder sb = new StringBuilder();
-			while(in.hasNext()) {
-			    sb.append(in.next());
-			}
-			in.close();
-			String outString = sb.toString();
-			
-			String expected = "Cell6Button4/~disp-string:hello/~repeat-button:2/~skip-button:02/~skip:3/~pause:5/~disp-clearAll";
-					
-			assertEquals(expected, outString);
-			
-		}
 
+	// Tests the following scenario:
+	/*
+	 * A script was created using Authoring.java and exported as "MyExample.txt".
+	 * This method tests to see if the Authoring app has created the correct script
+	 * for the following commands: Cell:6, Button: 4, Display string "hello", Repeat
+	 * button "2", Skip button "2" to "3", Pause for 5 seconds, Clear all cells
+	 * "MyExample.txt" is then compared with the expected output
+	 */
+	@Test
+	void testSavedFile() throws FileNotFoundException {
+
+		Scanner in = new Scanner(new FileReader("FactoryScenarios/MyExample.txt"));
+		StringBuilder sb = new StringBuilder();
+		while (in.hasNext()) {
+			sb.append(in.next());
+		}
+		in.close();
+		String outString = sb.toString();
+
+		String expected = "Cell6Button4/~disp-string:hello/~repeat-button:2/~skip-button:02/~skip:3/~pause:5/~disp-clearAll";
+
+		assertEquals(expected, outString);
+
+	}
 
 }
