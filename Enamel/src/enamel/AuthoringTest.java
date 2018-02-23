@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
@@ -122,8 +123,12 @@ public class AuthoringTest {
 	}
 	
 	@Test
-	public void testAudioCreation() {
+	public void testAudioCreation() throws LineUnavailableException, InterruptedException {
 		
+		AudioRecorder recorder = new AudioRecorder("tester1212", 1);
+		recorder.start();
+		File testFile = new File("FactoryScenarios/AudioFiles/tester1212.wav");
+		assertEquals(true,testFile.exists());
 	}
 
 }
