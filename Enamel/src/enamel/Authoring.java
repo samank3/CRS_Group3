@@ -94,7 +94,7 @@ public class Authoring {
 			// frame.setTitle("Authoring Application - Error Selecting File");
 			JOptionPane.showMessageDialog(null, "Error Opening File");
 		}
-		
+
 		return true;
 	}
 
@@ -327,8 +327,8 @@ public class Authoring {
 		JButton btnDisplayBrailleString = new JButton("Display Braille String");
 		btnDisplayBrailleString.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String brailleString = JOptionPane.showInputDialog(null, "Enter the String to be Displayed In Braille.",
-						"Enter the String to be Displayed in Braille.", JOptionPane.QUESTION_MESSAGE);
+				String brailleString = JOptionPane.showInputDialog(null, "Enter the String to be Displayed In Braille",
+						"Enter the String to be Displayed in Braille", JOptionPane.QUESTION_MESSAGE);
 
 				if (brailleString != null) {
 					scenarioReader.append("/~disp-string:" + brailleString + "\n");
@@ -341,7 +341,7 @@ public class Authoring {
 		JButton btnAddRepeatString = new JButton("Add Repeat String");
 		btnAddRepeatString.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String textToRepeat = JOptionPane.showInputDialog(null, "Enter the Text to Repeat.",
+				String textToRepeat = JOptionPane.showInputDialog(null, "Enter the Text to Repeat",
 						"Enter the Text to Repeat.", JOptionPane.QUESTION_MESSAGE);
 
 				if (textToRepeat != null) {
@@ -357,7 +357,7 @@ public class Authoring {
 		JButton btnAddRepeatButton = new JButton("Add Repeat Button");
 		btnAddRepeatButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String buttonIndex = JOptionPane.showInputDialog(null, "Enter the Button Number You Want Repeated.",
+				String buttonIndex = JOptionPane.showInputDialog(null, "Enter the Button Number You Want Repeated",
 						"Enter the Button Number You Want Repeated.", JOptionPane.QUESTION_MESSAGE);
 
 				if (buttonIndex != null && Integer.parseInt(buttonIndex) > 0
@@ -642,7 +642,7 @@ public class Authoring {
 		});
 
 		btnChooseScenario.getAccessibleContext().setAccessibleName("Choose a Scenario");
-		btnChooseScenario.getAccessibleContext().setAccessibleDescription("Choose an existing scenario to edit.");
+		btnChooseScenario.getAccessibleContext().setAccessibleDescription("Choose an existing scenario to edit");
 
 		btnCreateScenario.getAccessibleContext().setAccessibleName("Create a New Scenario");
 		btnCreateScenario.getAccessibleContext()
@@ -650,7 +650,7 @@ public class Authoring {
 
 		btnCreateAudioFiles.getAccessibleContext().setAccessibleName("Create an Audio File");
 		btnCreateAudioFiles.getAccessibleContext()
-				.setAccessibleDescription("Create an audio file to use with your script.");
+				.setAccessibleDescription("Create an audio file to use with your script");
 
 		btnTestScenario.getAccessibleContext().setAccessibleName("Test the Scenario Open");
 		btnTestScenario.getAccessibleContext()
@@ -661,7 +661,7 @@ public class Authoring {
 
 		btnAddTexttospeech.getAccessibleContext().setAccessibleName("Add Text to Speech");
 		btnAddTexttospeech.getAccessibleContext()
-				.setAccessibleDescription("Add a Text to Speech comment that. This will be spoken by the computer");
+				.setAccessibleDescription("Add a Text to Speech comment that will be spoken by the computer");
 
 		btnAddSoundFile.getAccessibleContext().setAccessibleName("Add Sound File");
 		btnAddSoundFile.getAccessibleContext().setAccessibleDescription(
@@ -669,7 +669,7 @@ public class Authoring {
 
 		btnAddPause.getAccessibleContext().setAccessibleName("Add a Pause");
 		btnAddPause.getAccessibleContext()
-				.setAccessibleDescription("Add a pause to your scenario file that lasts a certain seconds.");
+				.setAccessibleDescription("Add a pause to your scenario file that lasts a certain number of seconds.");
 
 		btnDisplayBrailleString.getAccessibleContext().setAccessibleName("Display Braille String");
 		btnDisplayBrailleString.getAccessibleContext()
@@ -683,21 +683,21 @@ public class Authoring {
 
 		btnAddSkipButton.getAccessibleContext().setAccessibleName("Add Skip Button");
 		btnAddSkipButton.getAccessibleContext().setAccessibleDescription(
-				"Choose an existing button to skip and choose an identifier of where to skip to.");
+				"Choose an existing button to skip and choose an identifier of where to skip to");
 
 		btnSkipTo.getAccessibleContext().setAccessibleName("Add Skip To Clause");
 		btnSkipTo.getAccessibleContext()
 				.setAccessibleDescription("Type an identifier previously chosen when using add skip button");
 
 		btnAddUserInput.getAccessibleContext().setAccessibleName("Add User Input");
-		btnAddUserInput.getAccessibleContext().setAccessibleDescription("Asks user for input.");
+		btnAddUserInput.getAccessibleContext().setAccessibleDescription("Asks user for input");
 
 		btnAddResetButtons.getAccessibleContext().setAccessibleName("Reset Buttons");
 		btnAddResetButtons.getAccessibleContext()
-				.setAccessibleDescription("Resets the actions of all buttons that exist for the scenario.");
+				.setAccessibleDescription("Resets the actions of all buttons that exist for the scenario");
 
 		btnSkipToClause.getAccessibleContext().setAccessibleName("Skip To Clause");
-		btnSkipToClause.getAccessibleContext().setAccessibleDescription("Choose an identifier to skip to.");
+		btnSkipToClause.getAccessibleContext().setAccessibleDescription("Choose an identifier to skip to");
 
 		btnSkipTo_1.getAccessibleContext().setAccessibleName("Where to Skip To");
 		btnSkipTo_1.getAccessibleContext()
@@ -708,15 +708,15 @@ public class Authoring {
 
 		btnClearSpecificCell.getAccessibleContext().setAccessibleName("Clear Specific Cell");
 		btnClearSpecificCell.getAccessibleContext().setAccessibleDescription(
-				"Enter the number of the cell you want to be cleared that is already initialized.");
+				"Enter the number of the cell you want to be cleared that is already initialized");
 
 		btnSetSpecificPin.getAccessibleContext().setAccessibleName("Set Specific Pin");
-		btnSetSpecificPin.getAccessibleContext().setAccessibleDescription(
-				"Sets a specific pin of a cell and provides it with an 8 character sequence.");
+		btnSetSpecificPin.getAccessibleContext()
+				.setAccessibleDescription("Sets a specific pin of a cell and provides it with an 8 character sequence");
 
 		btnDisplayCellCharacter.getAccessibleContext().setAccessibleName("Display Character in Cell");
 		btnDisplayCellCharacter.getAccessibleContext()
-				.setAccessibleDescription("Display english alphabet on specific braille cell.");
+				.setAccessibleDescription("Display english alphabet on specific braille cell");
 
 		btnRaiseOnePin.getAccessibleContext().setAccessibleName("Raise One Pin");
 		btnRaiseOnePin.getAccessibleContext().setAccessibleDescription("Raises a specific pin of a Braille Cell");
