@@ -31,18 +31,19 @@ import javax.swing.SwingConstants;
 
 public class Authoring {
 	private static JFrame frame;
-	private static JButton btnChooseScenario;
-	private static JFileChooser file_chooser;
-	private static JFileChooser sound_chooser;
-	private static JTextArea scenarioReader;
-	private static JButton btnCreateScenario;
-	private static JButton btnCreateAudioFiles;
-	private static JButton btnTestScenario;
+	public static JButton btnChooseScenario;
+	public static JFileChooser file_chooser;
+	public static JFileChooser sound_chooser;
+	public static JTextArea scenarioReader;
+	public static JButton btnCreateScenario;
+	public static JButton btnCreateAudioFiles;
+	public static JButton btnTestScenario;
 	private static JPanel pnlCreateScenarios;
 	private static int buttonNum;
 	private static int cellNum;
+	public static boolean testResult;
 
-	private static void openFileDialog() {
+	public static boolean openFileDialog() {
 		if (file_chooser.showOpenDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
 
 			StringBuffer buff = new StringBuffer();
@@ -62,7 +63,7 @@ public class Authoring {
 							// frame.setTitle("Authoring Application - Invalid Format");
 							JOptionPane.showMessageDialog(null, "Please select a valid scenario file.");
 							scanner.close();
-							return;
+							return false;
 						}
 					}
 					if (lineCounter == 1) {
@@ -71,7 +72,7 @@ public class Authoring {
 							// frame.setTitle("Authoring Application - Invalid Format");
 							JOptionPane.showMessageDialog(null, "Please select a valid scenario file.");
 							scanner.close();
-							return;
+							return false;
 						}
 					}
 					lineCounter += 1;
@@ -93,9 +94,11 @@ public class Authoring {
 			// frame.setTitle("Authoring Application - Error Selecting File");
 			JOptionPane.showMessageDialog(null, "Error Opening File");
 		}
+		
+		return true;
 	}
 
-	private static void saveFileDialog() {
+	public static boolean saveFileDialog() {
 		if (file_chooser.showSaveDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
 			File currentFile = file_chooser.getSelectedFile();
 
@@ -117,6 +120,7 @@ public class Authoring {
 			// frame.setTitle("Authoring Application - Error Selecting File");
 			JOptionPane.showMessageDialog(null, "Error Saving File");
 		}
+		return true;
 	}
 
 	public static void main(String[] args) {
@@ -155,7 +159,7 @@ public class Authoring {
 		btnCreateScenario = new JButton("Create Scenario");
 		btnCreateScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				file_chooser.setSelectedFile(null);
 				String gottenCells = JOptionPane.showInputDialog(null, "Enter Number of Braille Cells to Use",
 						"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
 				String gottenButtons = JOptionPane.showInputDialog(null, "Enter Number of Buttons to Use",
@@ -171,6 +175,7 @@ public class Authoring {
 				cellNum = cells;
 				pnlCreateScenarios.setVisible(true);
 				btnTestScenario.setEnabled(true);
+				testResult = true;
 
 			}
 		});
