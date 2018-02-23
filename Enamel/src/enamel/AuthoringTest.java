@@ -1,11 +1,12 @@
 package enamel;
 
-
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -16,11 +17,9 @@ import org.junit.Test;
 
 public class AuthoringTest {
 
-	private Authoring a;
-	
+
 	@Before
 	public void setUp() throws Exception {
-		a = new Authoring();
 	}
 
 	@Test
@@ -29,7 +28,7 @@ public class AuthoringTest {
 		Authoring.file_chooser = new JFileChooser();
 		Authoring.file_chooser.setSelectedFile(testFile);
 		String fileName = Authoring.file_chooser.getSelectedFile().getName();
-		assertEquals("Scenario_1.txt",fileName);
+		assertEquals("Scenario_1.txt", fileName);
 	}
 
 	@Test
@@ -38,9 +37,9 @@ public class AuthoringTest {
 		Authoring.file_chooser = new JFileChooser();
 		Authoring.file_chooser.setSelectedFile(testFile);
 		File currentFile = Authoring.file_chooser.getSelectedFile();
-		
+
 		String testString = "Cell 1 \n Button 4 \n This is a test case \n";
-		
+
 		try {
 			if (!currentFile.exists()) {
 				currentFile.createNewFile();
@@ -53,26 +52,78 @@ public class AuthoringTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
-		assertEquals(true,currentFile.exists());
+
+		assertEquals(true, currentFile.exists());
 	}
-	
+
 	@Test
 	public void testCreateScenarios() {
 		Authoring.scenarioReader = new JTextArea();
 		Authoring.testCreateScenarios();
-		assertEquals("Cell 1\nButton 4\n",Authoring.scenarioReader.getText());
+		assertEquals("Cell 1\nButton 4\n", Authoring.scenarioReader.getText());
 	}
-	
+
 	@Test
 	public void testAddNewEvent() {
 		Authoring.btnAddUserInput = new JButton();
 		Authoring.scenarioReader = new JTextArea();
 		Authoring.addUserInputString();
-		assertEquals("/~user-input\n",Authoring.scenarioReader.getText());
+		assertEquals("/~user-input\n", Authoring.scenarioReader.getText());
+	}
+
+	@Test
+	public void testValidScenario() throws FileNotFoundException {
+		File correctFormat = new File("FactoryScenarios/Scenario_1.txt");
+		File wrongFormat = new File("FactoryScenarios/Scenario_wrong.txt");
+		int count = 0;
+		boolean result = false;
+		Scanner scanner = new Scanner(wrongFormat);
+
+		while (scanner.hasNextLine()) {
+			// Check if first two lines follow the specific plan.
+			String line = scanner.nextLine();
+			if (count == 0) {
+				if (line.startsWith("Cell")) {
+					result = true;
+
+				}
+			}
+			if (count == 1) {
+				if (line.startsWith("Button")) {
+					result = true;
+				}
+			}
+
+		}
+		scanner.close();
+		assertEquals(result, false);
+
+		scanner = new Scanner(correctFormat);
+		while (scanner.hasNextLine()) {
+			// Check if first two lines follow the specific plan.
+			String line = scanner.nextLine();
+			if (count == 0) {
+				if (line.startsWith("Cell")) {
+					result = true;
+
+				}
+			}
+			if (count == 1) {
+				if (line.startsWith("Button")) {
+					result = true;
+				}
+			}
+
+		}
+
+		scanner.close();
+		assertEquals(result, true);
+
 	}
 	
-	
+	@Test
+	public void testAudioCreation() {
+		
+	}
 
 }
