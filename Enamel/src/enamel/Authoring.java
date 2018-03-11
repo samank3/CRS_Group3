@@ -100,6 +100,7 @@ public class Authoring {
 				}
 				scanner.close();
 				// System.out.println(buff.toString());
+				// ?
 				scenarioReader.setText(buff.toString());
 				btnTestScenario.setEnabled(true);
 				System.out.println("File: " + file_chooser.getSelectedFile() + " has been imported");
