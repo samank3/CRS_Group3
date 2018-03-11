@@ -634,12 +634,16 @@ public class Authoring {
 				String pause = JOptionPane.showInputDialog(null,
 						"Enter the Number of Seconds to Pause the Scenario for.",
 						"Enter the Number of Seconds to Pause the Scenario for.", JOptionPane.QUESTION_MESSAGE);
-
+				try {
 				if (pause != null && Integer.parseInt(pause) >= 0) {
 					scenarioReader.append("/~pause:" + pause + "\n");
 				} else {
 					JOptionPane.showMessageDialog(null,
-							"Error, Please Make Sure Pause Time Is Greater Than 0 Seconds.");
+							"Error, Please Make Sure Pause Time is Greater than 0.");
+				}
+				}catch(Exception e2) {
+					JOptionPane.showMessageDialog(null,
+							"Error, Please Make Sure Pause Time Is a Valid Time (less than " + Integer.MAX_VALUE + ") and is an Integer.");
 				}
 			}
 		});
