@@ -20,4 +20,11 @@ Quick Usage Instructions
 2. Complete and detailed instructions to run application are in "User Manual.pdf" under Documentation
 3. Please contact us if you see any bugs
 
+Authors
+========================
+
+1. Christopher Tsung(christophertsung)
+2. Rudra Sharma(PoisonFlame)
+3. Saman Khan(samank3)
+
 CRS Inc.
