@@ -192,10 +192,23 @@ public class Authoring {
 		btnCreateScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				file_chooser.setSelectedFile(null);
+
 				String gottenCells = JOptionPane.showInputDialog(null, "Enter Number of Braille Cells to Use",
 						"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
+
+				while ((gottenCells.equals("")) || (gottenCells == null)) {
+					gottenCells = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Braille Cells to Use",
+							"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
+					
+				}
+
 				String gottenButtons = JOptionPane.showInputDialog(null, "Enter Number of Buttons to Use",
 						"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
+
+				while ((gottenButtons.equals("")) || (gottenButtons == null)) {
+					gottenButtons = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Buttons to Use",
+							"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
+				}
 
 				int cells = Integer.parseInt(gottenCells);
 				int buttons = Integer.parseInt(gottenButtons);
@@ -523,13 +536,19 @@ public class Authoring {
 						"Enter the 8-Character Sequence Consisting of 0's and 1's.",
 						"Enter the  8-Character Sequence Consisting of 0's and 1's.", JOptionPane.QUESTION_MESSAGE);
 
-				if (cellIndex != null && Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= cellNum
+				try {
+					if (cellIndex != null && Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= cellNum
 						&& sequence.length() == 8 && sequence.matches("[01]+")) {
 					scenarioReader
 							.append("/~disp-cell-pins:" + (Integer.parseInt(cellIndex) - 1) + " " + sequence + "\n");
-				} else {
+					} else {
 					JOptionPane.showMessageDialog(null,
 							"Error, Please Make Sure the Cell Number Is Valid And Exists and the 8-Character Sequence is Valid.");
+					}
+				}
+				catch(Exception e2) {
+					JOptionPane.showMessageDialog(null,
+							"Error, please make sure pin number is a valid integer (less than " + Integer.MAX_VALUE + ")");
 				}
 			}
 		});
