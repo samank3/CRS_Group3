@@ -17,6 +17,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.ComponentOrientation;
@@ -34,8 +36,9 @@ import javax.swing.JComboBox;
 public class Authoring2 {
 	private static JFrame frame;
 	public static JButton btnChooseScenario;
-	public static  JFileChooser file_chooser;
+	public static JFileChooser file_chooser;
 	public static JFileChooser sound_chooser;
+	public static JFileChooser sound_opener;
 	public static JTextArea scenarioReader;
 	public static JList<String> lstCommands;
 	public static CommandList commands;
@@ -54,8 +57,9 @@ public class Authoring2 {
 	public static int buttonNum;
 	public static int cellNum;
 	public static boolean testResult;
+	public static boolean saveFile;
+	public static String saveFileLocation;
 
-	
 	public static boolean openFileDialog() {
 		file_chooser.setDialogTitle("Open Scenario File");
 		if (file_chooser.showOpenDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
@@ -78,7 +82,7 @@ public class Authoring2 {
 							return false;
 						}
 					}
-					if (lineCounter == 1) {
+					if (lineCounter   == 1) {
 						if (!line.startsWith("Button")) {
 							System.out.println("File: " + file_chooser.getSelectedFile() + " is not a valid format");
 							JOptionPane.showMessageDialog(null, "Please select a valid scenario file.");
@@ -89,17 +93,12 @@ public class Authoring2 {
 					lineCounter += 1;
 					buff.append(line + "\n");
 					commands.add(line);
+					saveFileLocation = file_chooser.getSelectedFile().toString();
+					saveFile = false;
 				}
 				scanner.close();
-				scenarioReader.setText(buff.toString());
-				btnTestScenario.setEnabled(true);
-				cmbFeatures.setEnabled(true);
-				btnExportScenario.setEnabled(true);
-				txtDescription.setEnabled(true);
-				btnEditSelectedFeature.setEnabled(true);
-				btnMoveUp.setEnabled(true);
-				btnMoveDown.setEnabled(true);
-				btnRemoveSelectedFeature.setEnabled(true);
+				//scenarioReader.setText(buff.toString());
+				enableEditTools();
 				System.out.println("File: " + file_chooser.getSelectedFile() + " has been imported");
 
 			} catch (FileNotFoundException e) {
@@ -114,20 +113,32 @@ public class Authoring2 {
 		return true;
 	}
 
+	private static void enableEditTools() {
+		btnTestScenario.setEnabled(true);
+		cmbFeatures.setEnabled(true);
+		btnExportScenario.setEnabled(true);
+		txtDescription.setEnabled(true);
+		//btnEditSelectedFeature.setEnabled(true);
+		btnAddFeature.setEnabled(true);
+		//btnMoveUp.setEnabled(true);
+		//btnMoveDown.setEnabled(true);
+		//btnRemoveSelectedFeature.setEnabled(true);
+	}
+
 	public static void testCreateScenarios() {
 		scenarioReader.setText("");
 		scenarioReader.append("Cell " + 1 + "\n");
 		scenarioReader.append("Button " + 4 + "\n");
 	}
-	
+
 	public static void addUserInputString() {
 		commands.add("/~user-input");
 	}
-	
+
 	public static boolean saveFileDialog() {
 		file_chooser.setDialogTitle("Save Scenario File");
 		if (file_chooser.showSaveDialog(btnChooseScenario) == JFileChooser.APPROVE_OPTION) {
-			File currentFile = new File(file_chooser.getSelectedFile().toString()+".txt");
+			File currentFile = new File(file_chooser.getSelectedFile().toString() + ".txt");
 
 			try {
 				if (!currentFile.exists()) {
@@ -136,11 +147,13 @@ public class Authoring2 {
 
 				FileWriter fw = new FileWriter(currentFile);
 				scenarioReader.setText("");
-				for(int i=0;i<commands.size();i++) {
+				for (int i = 0; i < commands.size(); i++) {
 					scenarioReader.append(commands.get(i) + "\n");
 				}
 				fw.write(scenarioReader.getText());
 				fw.close();
+				saveFileLocation = file_chooser.getSelectedFile().toString();
+				saveFile = false;
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -153,27 +166,68 @@ public class Authoring2 {
 		}
 		return true;
 	}
-	
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		frame = new JFrame();
 		frame.getContentPane().setMaximumSize(new Dimension(149, 23));
-		frame.setBounds(100, 100, 661, 739);
+		frame.setBounds(100, 100, 658, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Authoring Application");
 
 		file_chooser = new JFileChooser();
 		file_chooser.setAcceptAllFileFilterUsed(false);
-		file_chooser.setFileFilter(new FileNameExtensionFilter("Scenario File(.txt)","txt"));
+		file_chooser.setFileFilter(new FileNameExtensionFilter("Scenario File(.txt)", "txt"));
 		sound_chooser = new JFileChooser();
 		file_chooser.setCurrentDirectory(new java.io.File("C:"));
 		file_chooser.setDialogTitle("Open Scenario File");
+		sound_opener = new JFileChooser();
+		sound_opener.setDialogTitle("Choose Sound File Name");
+		sound_opener.setAcceptAllFileFilterUsed(false);
+		sound_opener.setFileFilter(new FileNameExtensionFilter("Audio File(.wav)", "wav"));
+
 		btnChooseScenario = new JButton("Import Scenario");
 		btnChooseScenario.setLocation(new Point(100, 100));
 		btnChooseScenario.setVisible(true);
-		
+		btnCreateScenario = new JButton("Create Scenario");
 		lstCommands = new JList<String>();
 		commands = new CommandList(lstCommands);
+		btnCreateScenario.setPreferredSize(new Dimension(95, 23));
+		btnCreateScenario.setMinimumSize(new Dimension(95, 23));
+		btnCreateScenario.setMaximumSize(new Dimension(95, 23));
+		btnTestScenario = new JButton("Test Scenario");
+		btnTestScenario.setEnabled(false);
+		btnCreateAudioFiles = new JButton("Create Audio File");
+		pnlCreateScenarios = new JPanel();
+		pnlCreateScenarios.setVisible(false);
+		btnExportScenario = new JButton("Export Scenario");
+		btnExportScenario.setEnabled(false);
+		cmbFeatures = new JComboBox<String>();
+		cmbFeatures.setEnabled(false);
+		txtDescription = new JTextArea();
+		txtDescription.setEnabled(false);
+		txtDescription.setText("Choose a feature to add from the dropdown menu above.");
+		txtDescription.setEditable(false);
+		txtDescription.setLineWrap(true);
+		txtDescription.setWrapStyleWord(true);
+		btnAddFeature = new JButton("Add Feature to Scenario");
+		btnAddFeature.setEnabled(false);
+		saveFile = false;
+		JLabel lblAddFeatures = new JLabel("Add Features");
+		lblAddFeatures.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnEditSelectedFeature = new JButton("Edit Selected Feature");
+		btnEditSelectedFeature.setEnabled(false);
+		btnEditSelectedFeature.setPreferredSize(new Dimension(149, 23));
+		btnEditSelectedFeature.setMinimumSize(new Dimension(149, 23));
+		btnEditSelectedFeature.setMaximumSize(new Dimension(149, 23));
+		btnMoveUp = new JButton("Move Up");
+		btnMoveUp.setEnabled(false);
+		btnMoveDown = new JButton("Move Down");
+		btnMoveDown.setEnabled(false);
+		btnRemoveSelectedFeature = new JButton("Remove Selected Feature");
+		btnRemoveSelectedFeature.setEnabled(false);
+		JLabel lblEditFeatures = new JLabel("Edit Features");
+		lblEditFeatures.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		btnChooseScenario.addActionListener(new ActionListener() {
 
@@ -183,16 +237,92 @@ public class Authoring2 {
 			}
 
 		});
+		
+		lstCommands.addListSelectionListener(new ListSelectionListener() {
 
-		btnCreateScenario = new JButton("Create Scenario");
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				if(!arg0.getValueIsAdjusting()) {
+				
+				
+				if(lstCommands.getSelectedIndex() == -1) {
+					btnMoveUp.setEnabled(false);
+					btnMoveDown.setEnabled(false);
+					btnRemoveSelectedFeature.setEnabled(false);
+					btnEditSelectedFeature.setEnabled(false);
+					return;
+				}
+				
+				if(lstCommands.getSelectedIndex() == 0 || lstCommands.getSelectedIndex() == 1) {
+					btnMoveUp.setEnabled(false);
+					btnMoveDown.setEnabled(false);
+					btnRemoveSelectedFeature.setEnabled(false);
+					btnEditSelectedFeature.setEnabled(true);
+					return;
+				}
+				
+				if(lstCommands.getSelectedIndex() == 2) {
+					btnMoveUp.setEnabled(false);
+					if(lstCommands.getSelectedIndex() == commands.size() -1) {
+						btnMoveDown.setEnabled(false);
+					}else {
+						btnMoveDown.setEnabled(true);
+					}
+					btnRemoveSelectedFeature.setEnabled(true);
+					btnEditSelectedFeature.setEnabled(true);
+					return;
+				}
+				
+				if(lstCommands.getSelectedIndex() == commands.size() -1) {
+					btnMoveDown.setEnabled(false);
+					btnMoveUp.setEnabled(true);
+					btnRemoveSelectedFeature.setEnabled(true);
+					btnEditSelectedFeature.setEnabled(true);
+					return;
+				}
+				
+				btnMoveUp.setEnabled(true);
+				btnMoveDown.setEnabled(true);
+				btnRemoveSelectedFeature.setEnabled(true);
+				btnEditSelectedFeature.setEnabled(true);
+			}
+			}
+			
+		});
+
 		btnCreateScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				file_chooser.setSelectedFile(null);
+				
+				if(AuthUtil.fileSaveCheck(saveFile) == false) {
+					return;
+				}
+				
 				String gottenCells = JOptionPane.showInputDialog(null, "Enter Number of Braille Cells to Use",
 						"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
+				
+				if(gottenCells == null) {
+					return;
+				}
+				
 				String gottenButtons = JOptionPane.showInputDialog(null, "Enter Number of Buttons to Use",
 						"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
+				
+				while ((gottenCells.equals("")) || (gottenCells == null) || !AuthUtil.isNumberValid(Double.valueOf(gottenCells))) {
+					gottenCells = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Braille Cells to Use",
+							"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
+					
+				}
 
+
+				while ((gottenButtons.equals("")) || (gottenButtons == null) || !AuthUtil.isNumberValid(Double.valueOf(gottenButtons))) {
+					gottenButtons = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Buttons to Use",
+							"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
+				}
+				
+				
 				int cells = Integer.parseInt(gottenCells);
 				int buttons = Integer.parseInt(gottenButtons);
 
@@ -201,27 +331,16 @@ public class Authoring2 {
 				commands.add("Button " + buttons);
 				buttonNum = buttons;
 				cellNum = cells;
-				btnTestScenario.setEnabled(true);
-				btnExportScenario.setEnabled(true);
-				cmbFeatures.setEnabled(true);
-				btnAddFeature.setEnabled(true);
-				btnEditSelectedFeature.setEnabled(true);
-				btnMoveUp.setEnabled(true);
-				btnMoveDown.setEnabled(true);
-				btnRemoveSelectedFeature.setEnabled(true);
+				enableEditTools();
 				testResult = true;
+				saveFile = true;
 
 			}
 		});
-		btnCreateScenario.setPreferredSize(new Dimension(95, 23));
-		btnCreateScenario.setMinimumSize(new Dimension(95, 23));
-		btnCreateScenario.setMaximumSize(new Dimension(95, 23));
 
-		btnTestScenario = new JButton("Test Scenario");
-		btnTestScenario.setEnabled(false);
 		btnTestScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				String fileToCheck;
 				if (file_chooser.getSelectedFile() != null && !file_chooser.getSelectedFile().toString().isEmpty()) {
 					fileToCheck = file_chooser.getSelectedFile().toString();
@@ -232,7 +351,7 @@ public class Authoring2 {
 							currentFile.createNewFile();
 						}
 						scenarioReader.setText("");
-						for(int i=0;i<commands.size();i++) {
+						for (int i = 0; i < commands.size(); i++) {
 							scenarioReader.append(commands.get(i) + "\n");
 						}
 						FileWriter fw = new FileWriter(currentFile);
@@ -256,38 +375,38 @@ public class Authoring2 {
 			}
 		});
 
-		btnCreateAudioFiles = new JButton("Create Audio File");
 		btnCreateAudioFiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//String gottenFileName = JOptionPane.showInputDialog(null, "Enter Name of Audio File to Create",
-						//"Enter Name of Audio File to Create", JOptionPane.QUESTION_MESSAGE);
+				// String gottenFileName = JOptionPane.showInputDialog(null, "Enter Name of
+				// Audio File to Create",
+				// "Enter Name of Audio File to Create", JOptionPane.QUESTION_MESSAGE);
 				String gottenFileName = "";
-				file_chooser.setDialogTitle("Save Audio File");
-				
-				if (file_chooser.showSaveDialog(btnCreateAudioFiles) == JFileChooser.APPROVE_OPTION) {
-					File currentFile = file_chooser.getSelectedFile();
+				sound_opener.setDialogTitle("Save Audio File");
+
+				if (sound_opener.showSaveDialog(btnCreateAudioFiles) == JFileChooser.APPROVE_OPTION) {
+					File currentFile = sound_opener.getSelectedFile();
 
 					try {
 						if (!currentFile.exists()) {
-							currentFile.createNewFile();
+							//currentFile.createNewFile();
 						}
 
 						gottenFileName = currentFile.toString();
 
-					} catch (IOException e1) {
+					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
 
 				} else {
 					System.out.println("Error Saving File");
 					JOptionPane.showMessageDialog(null, "Error Saving File");
+					return;
 				}
-				
-				
+
 				String gottenDuration = JOptionPane.showInputDialog(null,
 						"Enter The Duration of the Audio File in Seconds",
 						"Enter The Duration of the Audio File in Seconds", JOptionPane.QUESTION_MESSAGE);
-				//gottenFileName == null ||
+				// gottenFileName == null ||
 				if (gottenFileName == null || gottenDuration == null) {
 					// Do Nothing
 				} else {
@@ -314,171 +433,145 @@ public class Authoring2 {
 			}
 		});
 
-		pnlCreateScenarios = new JPanel();
-		pnlCreateScenarios.setVisible(false);
-
-		btnExportScenario = new JButton("Export Scenario");
-		btnExportScenario.setEnabled(false);
 		btnExportScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveFileDialog();
 			}
 		});
-		
-		JScrollPane scrollPane = new JScrollPane(lstCommands,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+
+		JScrollPane scrollPane = new JScrollPane(lstCommands, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
 		frame.getContentPane().add(scrollPane);
-		
-		cmbFeatures = new JComboBox<String>();
-		cmbFeatures.setEnabled(false);
-		txtDescription = new JTextArea();
-		txtDescription.setEnabled(false);
+
 		cmbFeatures.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				AuthUtil.setDescription(txtDescription, cmbFeatures.getSelectedIndex());
 			}
-			
+
 		});
-		
-		for(int i=0;i<AuthUtil.populateFeatures().size();i++) {
+
+		for (int i = 0; i < AuthUtil.populateFeatures().size(); i++) {
 			cmbFeatures.addItem(AuthUtil.populateFeatures().get(i));
 		}
-		
-		
-		txtDescription.setText("Choose a feature to add from the dropdown menu above.");
-		txtDescription.setEditable(false);
-		txtDescription.setLineWrap(true);
-		txtDescription.setWrapStyleWord(true);
-		
-		btnAddFeature = new JButton("Add Feature to Scenario");
-		btnAddFeature.setEnabled(false);
-		
+
 		btnAddFeature.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				AuthUtil.triggerScenario(commands,cmbFeatures.getSelectedIndex());
+				AuthUtil.triggerScenario(commands, cmbFeatures.getSelectedIndex());
 			}
-			
+
 		});
-		
-		JLabel lblAddFeatures = new JLabel("Add Features");
-		lblAddFeatures.setFont(new Font("Tahoma", Font.BOLD, 14));
-		
-		JLabel lblEditFeatures = new JLabel("Edit Features");
-		lblEditFeatures.setFont(new Font("Tahoma", Font.BOLD, 14));
-		
-		btnEditSelectedFeature = new JButton("Edit Selected Feature");
-		btnEditSelectedFeature.setEnabled(false);
-		btnEditSelectedFeature.setPreferredSize(new Dimension(149, 23));
-		btnEditSelectedFeature.setMinimumSize(new Dimension(149, 23));
-		btnEditSelectedFeature.setMaximumSize(new Dimension(149, 23));
-		
-		btnMoveUp = new JButton("Move Up");
-		btnMoveUp.setEnabled(false);
-		
-		btnMoveDown = new JButton("Move Down");
-		btnMoveDown.setEnabled(false);
-		
-		btnRemoveSelectedFeature = new JButton("Remove Selected Feature");
-		btnRemoveSelectedFeature.setEnabled(false);
-		
-		
+
 		btnMoveUp.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				commands.moveUp(lstCommands.getSelectedIndex());	
+				commands.moveUp(lstCommands.getSelectedIndex());
 			}
-			
+
 		});
-		
+
 		btnMoveDown.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				commands.moveDown(lstCommands.getSelectedIndex());
 			}
-			
+
 		});
-		
+
 		btnRemoveSelectedFeature.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				commands.remove(lstCommands.getSelectedIndex());
 			}
-			
+
 		});
-		
+
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(btnRemoveSelectedFeature, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup().addContainerGap()
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btnRemoveSelectedFeature, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+								Short.MAX_VALUE)
 						.addComponent(btnMoveDown, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(btnMoveUp, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnEditSelectedFeature, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnCreateScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnChooseScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnExportScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnTestScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnCreateAudioFiles, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnEditSelectedFeature, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+								Short.MAX_VALUE)
+						.addComponent(btnCreateScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+								Short.MAX_VALUE)
+						.addComponent(btnChooseScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+								Short.MAX_VALUE)
+						.addComponent(btnExportScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+								Short.MAX_VALUE)
+						.addComponent(btnTestScenario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+								Short.MAX_VALUE)
+						.addComponent(btnCreateAudioFiles, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+								Short.MAX_VALUE)
 						.addComponent(txtDescription, GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
 						.addComponent(btnAddFeature, GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
 						.addComponent(cmbFeatures, 0, 197, Short.MAX_VALUE)
-						.addComponent(lblEditFeatures, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(lblAddFeatures, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(pnlCreateScenarios, GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
-					.addGap(0))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(3)
-					.addComponent(btnCreateScenario, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-					.addGap(9)
-					.addComponent(btnChooseScenario, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnExportScenario, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnTestScenario, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnCreateAudioFiles, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblAddFeatures)
-					.addGap(5)
-					.addComponent(cmbFeatures, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnAddFeature, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(txtDescription, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(lblEditFeatures, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnEditSelectedFeature, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnMoveUp, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnMoveDown, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnRemoveSelectedFeature, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-					.addGap(113)
-					.addComponent(pnlCreateScenarios, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-					.addGap(24))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		
-		
+						.addComponent(lblEditFeatures, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+								Short.MAX_VALUE)
+						.addComponent(lblAddFeatures, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+								Short.MAX_VALUE))
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addComponent(pnlCreateScenarios, GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE).addGap(0)));
+		groupLayout
+				.setVerticalGroup(groupLayout
+						.createParallelGroup(
+								Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addGap(3)
+								.addComponent(btnCreateScenario, GroupLayout.PREFERRED_SIZE, 31,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(9)
+								.addComponent(btnChooseScenario, GroupLayout.PREFERRED_SIZE, 35,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnExportScenario, GroupLayout.PREFERRED_SIZE, 32,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnTestScenario, GroupLayout.PREFERRED_SIZE, 33,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnCreateAudioFiles, GroupLayout.PREFERRED_SIZE, 33,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(lblAddFeatures).addGap(5)
+								.addComponent(cmbFeatures, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnAddFeature, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(txtDescription, GroupLayout.PREFERRED_SIZE, 72,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(18)
+								.addComponent(lblEditFeatures, GroupLayout.PREFERRED_SIZE, 17,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnEditSelectedFeature, GroupLayout.PREFERRED_SIZE, 31,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnMoveUp, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnMoveDown, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnRemoveSelectedFeature, GroupLayout.PREFERRED_SIZE, 31,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(113)
+								.addComponent(pnlCreateScenarios, GroupLayout.PREFERRED_SIZE, 27,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(24))
+						.addGroup(groupLayout.createSequentialGroup()
+								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+								.addContainerGap()));
+
 		scrollPane.setViewportView(lstCommands);
 		pnlCreateScenarios.setLayout(null);
 
@@ -487,15 +580,15 @@ public class Authoring2 {
 		lblScenarioFeatures.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblScenarioFeatures.setBounds(0, 0, 197, 29);
 		pnlCreateScenarios.add(lblScenarioFeatures);
-		
-				scenarioReader = new JTextArea();
-				scenarioReader.setBounds(58, 402, 84, 141);
-				pnlCreateScenarios.add(scenarioReader);
-				scenarioReader.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-				scenarioReader.setBorder(UIManager.getBorder("FileChooser.listViewBorder"));
-				scenarioReader.setWrapStyleWord(true);
-				scenarioReader.setLineWrap(true);
-				scenarioReader.setVisible(true);
+
+		scenarioReader = new JTextArea();
+		scenarioReader.setBounds(58, 402, 84, 141);
+		pnlCreateScenarios.add(scenarioReader);
+		scenarioReader.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		scenarioReader.setBorder(UIManager.getBorder("FileChooser.listViewBorder"));
+		scenarioReader.setWrapStyleWord(true);
+		scenarioReader.setLineWrap(true);
+		scenarioReader.setVisible(true);
 
 		frame.getContentPane().setLayout(groupLayout);
 
@@ -516,7 +609,6 @@ public class Authoring2 {
 
 		btnExportScenario.getAccessibleContext().setAccessibleName("Export Scenario");
 		btnExportScenario.getAccessibleContext().setAccessibleDescription("Export Scenario into a text file");
-
 
 		frame.setVisible(true);
 

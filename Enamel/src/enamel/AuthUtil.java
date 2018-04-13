@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class AuthUtil {
 
@@ -33,6 +34,56 @@ public class AuthUtil {
 		list.add("Lower One Pin");
 
 		return list;
+	}
+	
+	public static int validNumber(double i) {
+		// Returns valid number. If number is valid, same number is returned.
+		// If number is invalid, a valid substitute number is returned.
+		if(i>Integer.MAX_VALUE) {
+			return Integer.MAX_VALUE;
+		}else {
+			return (int)i;
+		}
+	}
+	
+	public static boolean isNumberValid(double i) {
+		// Returns if Number is Valid.
+		if(i>Integer.MAX_VALUE) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
+	public static boolean fileSaveCheck(boolean isEditMade) {
+		System.out.println(isEditMade);
+		if(isEditMade) {
+			// Ask to Save the File
+			JFileChooser file_chooser = new JFileChooser();
+			file_chooser.setAcceptAllFileFilterUsed(false);
+			file_chooser.setFileFilter(new FileNameExtensionFilter("Scenario File(.txt)", "txt"));
+			Object[] options = {"Yes", "No", "Cancel"};
+			int saveDialog = JOptionPane.showOptionDialog(null, "Would you like to save this scenario file?", "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+			
+			if(saveDialog == 0) {
+				//YES
+				//Check if File location is set, if it is set then modify that file. If no set then call the saveFileDialog
+				if(!Authoring2.saveFileLocation.equals("")) {
+					Authoring2.saveFileDialog();
+				}else {
+					// Save file to its existing location.
+				}
+				return true;
+			}else if(saveDialog == 1) {
+				// NO
+				return true;
+			}else {
+				// CANCEL
+				return false;
+			}
+			
+		}
+		return true;
 	}
 
 	public static void setDescription(JTextArea description, int index) {
@@ -265,7 +316,7 @@ public class AuthUtil {
 		} else {
 			JOptionPane.showMessageDialog(null, "Error, select a valid feature to add.");
 		}
-
+		Authoring2.saveFile = true;
 	}
 
 }
