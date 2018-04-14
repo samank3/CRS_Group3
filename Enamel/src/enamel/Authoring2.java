@@ -246,7 +246,8 @@ public class Authoring2 {
 				
 				if(!arg0.getValueIsAdjusting()) {
 				
-				
+				//System.out.println(lstCommands.getSelectedIndex());
+					
 				if(lstCommands.getSelectedIndex() == -1) {
 					btnMoveUp.setEnabled(false);
 					btnMoveDown.setEnabled(false);
@@ -307,8 +308,7 @@ public class Authoring2 {
 					return;
 				}
 				
-				String gottenButtons = JOptionPane.showInputDialog(null, "Enter Number of Buttons to Use",
-						"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
+				
 				
 				while ((gottenCells.equals("")) || (gottenCells == null) || !AuthUtil.isNumberValid(Double.valueOf(gottenCells))) {
 					gottenCells = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Braille Cells to Use",
@@ -316,6 +316,8 @@ public class Authoring2 {
 					
 				}
 
+				String gottenButtons = JOptionPane.showInputDialog(null, "Enter Number of Buttons to Use",
+						"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
 
 				while ((gottenButtons.equals("")) || (gottenButtons == null) || !AuthUtil.isNumberValid(Double.valueOf(gottenButtons))) {
 					gottenButtons = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Buttons to Use",
@@ -327,7 +329,9 @@ public class Authoring2 {
 				int buttons = Integer.parseInt(gottenButtons);
 
 				commands.reset();
+				commands.setLastFeatureType(AuthUtil.EDIT_CELL);
 				commands.add("Cell " + cells);
+				commands.setLastFeatureType(AuthUtil.EDIT_BUTTON);
 				commands.add("Button " + buttons);
 				buttonNum = buttons;
 				cellNum = cells;
@@ -461,7 +465,7 @@ public class Authoring2 {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				AuthUtil.triggerScenario(commands, cmbFeatures.getSelectedIndex());
+				AuthUtil.triggerScenario(commands, cmbFeatures.getSelectedIndex(),AuthUtil.CREATE,lstCommands.getSelectedIndex());
 			}
 
 		});
@@ -491,6 +495,17 @@ public class Authoring2 {
 				commands.remove(lstCommands.getSelectedIndex());
 			}
 
+		});
+		
+		btnEditSelectedFeature.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int index = lstCommands.getSelectedIndex();
+				AuthUtil.editScenario(commands, index, commands.getType(index));
+			}
+			
 		});
 
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
