@@ -56,6 +56,7 @@ public class Authoring2 {
 	private static JPanel pnlCreateScenarios;
 	public static int buttonNum;
 	public static int cellNum;
+	public static int commandsSize;
 	public static boolean testResult;
 	public static boolean saveFile;
 	public static String saveFileLocation;
@@ -82,7 +83,7 @@ public class Authoring2 {
 							return false;
 						}
 					}
-					if (lineCounter   == 1) {
+					if (lineCounter == 1) {
 						if (!line.startsWith("Button")) {
 							System.out.println("File: " + file_chooser.getSelectedFile() + " is not a valid format");
 							JOptionPane.showMessageDialog(null, "Please select a valid scenario file.");
@@ -92,12 +93,23 @@ public class Authoring2 {
 					}
 					lineCounter += 1;
 					buff.append(line + "\n");
+					try {
+					if(commands.get(commands.size() - 1).equals("/~repeat") || commands.get(commands.size()- 2).equals("/~repeat") ||
+							commands.get(commands.size() - 3).equals("/~repeat")) {
+						commands.setLastFeatureType(GetFeature.type("/~repeat"));
+					}else {
+					commands.setLastFeatureType(GetFeature.type(line));
+					}
+					}catch(Exception e) {
+						commands.setLastFeatureType(GetFeature.type(line));
+					}
 					commands.add(line);
 					saveFileLocation = file_chooser.getSelectedFile().toString();
 					saveFile = false;
 				}
+				commandsSize = commands.size();
 				scanner.close();
-				//scenarioReader.setText(buff.toString());
+				// scenarioReader.setText(buff.toString());
 				enableEditTools();
 				System.out.println("File: " + file_chooser.getSelectedFile() + " has been imported");
 
@@ -118,11 +130,11 @@ public class Authoring2 {
 		cmbFeatures.setEnabled(true);
 		btnExportScenario.setEnabled(true);
 		txtDescription.setEnabled(true);
-		//btnEditSelectedFeature.setEnabled(true);
+		// btnEditSelectedFeature.setEnabled(true);
 		btnAddFeature.setEnabled(true);
-		//btnMoveUp.setEnabled(true);
-		//btnMoveDown.setEnabled(true);
-		//btnRemoveSelectedFeature.setEnabled(true);
+		// btnMoveUp.setEnabled(true);
+		// btnMoveDown.setEnabled(true);
+		// btnRemoveSelectedFeature.setEnabled(true);
 	}
 
 	public static void testCreateScenarios() {
@@ -168,7 +180,6 @@ public class Authoring2 {
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		frame = new JFrame();
 		frame.getContentPane().setMaximumSize(new Dimension(149, 23));
 		frame.setBounds(100, 100, 658, 605);
@@ -237,136 +248,135 @@ public class Authoring2 {
 			}
 
 		});
-		
+
 		lstCommands.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
-				// TODO Auto-generated method stub
-				
-				if(!arg0.getValueIsAdjusting()) {
-				
-				int currIndex = lstCommands.getSelectedIndex();
-					
-				//System.out.println(lstCommands.getSelectedIndex());
-				try {
-				int repeatLocation  = 0;
-				if(commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")){
-					repeatLocation = lstCommands.getSelectedIndex();
-				}
-				if(commands.get(lstCommands.getSelectedIndex() - 1).equals("/~repeat")) {
-					repeatLocation = lstCommands.getSelectedIndex() -1;
-				}
-				if(commands.get(lstCommands.getSelectedIndex() - 2).equals("/~repeat")) {
-					repeatLocation = lstCommands.getSelectedIndex() -2;
-				}
-				
-				// 4 CASES 1.) WHERE THEY'RE MIN AND MAX , 2.) WHERE ITS RIGHT IN THE MIDDLE, 3.) WHERE ITS TOP, 4.) WHERE ITS BOTTOM
-				if(repeatLocation != 0) {
-					if(repeatLocation == 2 && repeatLocation + 2 == commands.size() -1) {
-						btnEditSelectedFeature.setEnabled(true);	
+
+				if (!arg0.getValueIsAdjusting()) {
+
+					int currIndex = lstCommands.getSelectedIndex();
+
+					// System.out.println(lstCommands.getSelectedIndex());
+					try {
+						int repeatLocation = 0;
+						if (commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")) {
+							repeatLocation = lstCommands.getSelectedIndex();
+						}
+						if (commands.get(lstCommands.getSelectedIndex() - 1).equals("/~repeat")) {
+							repeatLocation = lstCommands.getSelectedIndex() - 1;
+						}
+						if (commands.get(lstCommands.getSelectedIndex() - 2).equals("/~repeat")) {
+							repeatLocation = lstCommands.getSelectedIndex() - 2;
+						}
+
+						// 4 CASES 1.) WHERE THEY'RE MIN AND MAX , 2.) WHERE ITS RIGHT IN THE MIDDLE,
+						// 3.) WHERE ITS TOP, 4.) WHERE ITS BOTTOM
+						if (repeatLocation != 0) {
+							if (repeatLocation == 2 && repeatLocation + 2 == commands.size() - 1) {
+								btnEditSelectedFeature.setEnabled(true);
+								btnMoveUp.setEnabled(false);
+								btnMoveDown.setEnabled(false);
+								btnRemoveSelectedFeature.setEnabled(true);
+							} else if (repeatLocation == 2) {
+								btnEditSelectedFeature.setEnabled(true);
+								btnMoveUp.setEnabled(false);
+								btnMoveDown.setEnabled(true);
+								btnRemoveSelectedFeature.setEnabled(true);
+							} else if (repeatLocation + 2 == commands.size() - 1) {
+								btnEditSelectedFeature.setEnabled(true);
+								btnMoveUp.setEnabled(true);
+								btnMoveDown.setEnabled(false);
+								btnRemoveSelectedFeature.setEnabled(true);
+							} else {
+								btnEditSelectedFeature.setEnabled(true);
+								btnMoveUp.setEnabled(true);
+								btnMoveDown.setEnabled(true);
+								btnRemoveSelectedFeature.setEnabled(true);
+							}
+							return;
+						}
+					} catch (Exception e) {
+
+					}
+
+					if (currIndex == -1) {
 						btnMoveUp.setEnabled(false);
 						btnMoveDown.setEnabled(false);
-						btnRemoveSelectedFeature.setEnabled(true);
-					}else if(repeatLocation == 2) {
-						btnEditSelectedFeature.setEnabled(true);	
+						btnRemoveSelectedFeature.setEnabled(false);
+						btnEditSelectedFeature.setEnabled(false);
+						return;
+					}
+
+					if (currIndex == 0 || currIndex == 1) {
 						btnMoveUp.setEnabled(false);
-						btnMoveDown.setEnabled(true);
-						btnRemoveSelectedFeature.setEnabled(true);
-					}else if(repeatLocation + 2 == commands.size() -1) {
-						btnEditSelectedFeature.setEnabled(true);	
-						btnMoveUp.setEnabled(true);
 						btnMoveDown.setEnabled(false);
-						btnRemoveSelectedFeature.setEnabled(true);
-					}else {
-						btnEditSelectedFeature.setEnabled(true);	
-						btnMoveUp.setEnabled(true);
-						btnMoveDown.setEnabled(true);
-						btnRemoveSelectedFeature.setEnabled(true);
+						btnRemoveSelectedFeature.setEnabled(false);
+						btnEditSelectedFeature.setEnabled(true);
+						return;
 					}
-					return;
-				}
-				}catch(Exception e) {
-					
-				}
-					
-				if(currIndex == -1) {
-					btnMoveUp.setEnabled(false);
-					btnMoveDown.setEnabled(false);
-					btnRemoveSelectedFeature.setEnabled(false);
-					btnEditSelectedFeature.setEnabled(false);
-					return;
-				}
-				
-				if(currIndex == 0 || currIndex == 1) {
-					btnMoveUp.setEnabled(false);
-					btnMoveDown.setEnabled(false);
-					btnRemoveSelectedFeature.setEnabled(false);
-					btnEditSelectedFeature.setEnabled(true);
-					return;
-				}
-				
-				if(currIndex == 2) {
-					btnMoveUp.setEnabled(false);
-					if(lstCommands.getSelectedIndex() == commands.size() -1) {
+
+					if (currIndex == 2) {
+						btnMoveUp.setEnabled(false);
+						if (lstCommands.getSelectedIndex() == commands.size() - 1) {
+							btnMoveDown.setEnabled(false);
+						} else {
+							btnMoveDown.setEnabled(true);
+						}
+						btnRemoveSelectedFeature.setEnabled(true);
+						btnEditSelectedFeature.setEnabled(true);
+						return;
+					}
+
+					if (currIndex == commands.size() - 1) {
 						btnMoveDown.setEnabled(false);
-					}else {
-						btnMoveDown.setEnabled(true);
+						btnMoveUp.setEnabled(true);
+						btnRemoveSelectedFeature.setEnabled(true);
+						btnEditSelectedFeature.setEnabled(true);
+						return;
 					}
-					btnRemoveSelectedFeature.setEnabled(true);
-					btnEditSelectedFeature.setEnabled(true);
-					return;
-				}
-				
-				if(currIndex == commands.size() -1) {
-					btnMoveDown.setEnabled(false);
+
 					btnMoveUp.setEnabled(true);
+					btnMoveDown.setEnabled(true);
 					btnRemoveSelectedFeature.setEnabled(true);
 					btnEditSelectedFeature.setEnabled(true);
-					return;
 				}
-				
-				btnMoveUp.setEnabled(true);
-				btnMoveDown.setEnabled(true);
-				btnRemoveSelectedFeature.setEnabled(true);
-				btnEditSelectedFeature.setEnabled(true);
 			}
-			}
-			
+
 		});
 
 		btnCreateScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				file_chooser.setSelectedFile(null);
-				
-				if(AuthUtil.fileSaveCheck(saveFile) == false) {
+
+				if (AuthUtil.fileSaveCheck(saveFile) == false) {
 					return;
 				}
-				
+
 				String gottenCells = JOptionPane.showInputDialog(null, "Enter Number of Braille Cells to Use",
 						"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
-				
-				if(gottenCells == null) {
+
+				if (gottenCells == null) {
 					return;
 				}
-				
-				
-				
+
 				while ((gottenCells.equals("")) || (gottenCells == null) || !AuthUtil.isNumberValid(gottenCells)) {
-					gottenCells = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Braille Cells to Use",
+					gottenCells = JOptionPane.showInputDialog(null,
+							"Error! Enter a valid number of Braille Cells to Use",
 							"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
-					
+
 				}
 
 				String gottenButtons = JOptionPane.showInputDialog(null, "Enter Number of Buttons to Use",
 						"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
 
-				while ((gottenButtons.equals("")) || (gottenButtons == null) || !AuthUtil.isNumberValid(gottenButtons)) {
+				while ((gottenButtons.equals("")) || (gottenButtons == null)
+						|| !AuthUtil.isNumberValid(gottenButtons)) {
 					gottenButtons = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Buttons to Use",
 							"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
 				}
-				
-				
+
 				int cells = Integer.parseInt(gottenCells);
 				int buttons = Integer.parseInt(gottenButtons);
 
@@ -388,8 +398,9 @@ public class Authoring2 {
 			public void actionPerformed(ActionEvent e) {
 
 				String fileToCheck;
-				if (file_chooser.getSelectedFile() != null && !file_chooser.getSelectedFile().toString().isEmpty()) {
-					fileToCheck = file_chooser.getSelectedFile().toString();
+				if (file_chooser.getSelectedFile() != null && !file_chooser.getSelectedFile().toString().isEmpty() && 
+						commandsSize == commands.size() && saveFile == false) {
+					fileToCheck = file_chooser.getSelectedFile().getAbsolutePath().toString();
 				} else {
 					File currentFile = new File("FactoryScenarios/Scenario_temp.txt");
 					try {
@@ -434,7 +445,7 @@ public class Authoring2 {
 
 					try {
 						if (!currentFile.exists()) {
-							//currentFile.createNewFile();
+							// currentFile.createNewFile();
 						}
 
 						gottenFileName = currentFile.toString();
@@ -469,7 +480,6 @@ public class Authoring2 {
 						try {
 							recorder.start();
 						} catch (LineUnavailableException | InterruptedException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					} else {
@@ -507,7 +517,8 @@ public class Authoring2 {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				AuthUtil.triggerScenario(commands, cmbFeatures.getSelectedIndex(),AuthUtil.CREATE,lstCommands.getSelectedIndex());
+				AuthUtil.triggerScenario(commands, cmbFeatures.getSelectedIndex(), AuthUtil.CREATE,
+						lstCommands.getSelectedIndex());
 			}
 
 		});
@@ -518,16 +529,16 @@ public class Authoring2 {
 			public void actionPerformed(ActionEvent arg0) {
 				int repeatLocation = 0;
 				int currIndex = lstCommands.getSelectedIndex();
-				if(commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")){
+				if (commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")) {
 					repeatLocation = lstCommands.getSelectedIndex();
 				}
-				if(commands.get(lstCommands.getSelectedIndex() - 1).equals("/~repeat")) {
-					repeatLocation = lstCommands.getSelectedIndex() -1;
+				if (commands.get(lstCommands.getSelectedIndex() - 1).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() - 1;
 				}
-				if(commands.get(lstCommands.getSelectedIndex() - 2).equals("/~repeat")) {
-					repeatLocation = lstCommands.getSelectedIndex() -2;
+				if (commands.get(lstCommands.getSelectedIndex() - 2).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() - 2;
 				}
-				
+
 				commands.moveUp(repeatLocation == 0 ? currIndex : repeatLocation);
 			}
 
@@ -539,14 +550,14 @@ public class Authoring2 {
 			public void actionPerformed(ActionEvent e) {
 				int repeatLocation = 0;
 				int currIndex = lstCommands.getSelectedIndex();
-				if(commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")){
+				if (commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")) {
 					repeatLocation = lstCommands.getSelectedIndex();
 				}
-				if(commands.get(lstCommands.getSelectedIndex() - 1).equals("/~repeat")) {
-					repeatLocation = lstCommands.getSelectedIndex() -1;
+				if (commands.get(lstCommands.getSelectedIndex() - 1).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() - 1;
 				}
-				if(commands.get(lstCommands.getSelectedIndex() - 2).equals("/~repeat")) {
-					repeatLocation = lstCommands.getSelectedIndex() -2;
+				if (commands.get(lstCommands.getSelectedIndex() - 2).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() - 2;
 				}
 				commands.moveDown(repeatLocation == 0 ? currIndex : repeatLocation);
 			}
@@ -557,40 +568,38 @@ public class Authoring2 {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int repeatLocation=0;
+				int repeatLocation = 0;
 				int currIndex = lstCommands.getSelectedIndex();
-				if(commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")){
+				if (commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")) {
 					repeatLocation = lstCommands.getSelectedIndex();
 				}
-				if(commands.get(lstCommands.getSelectedIndex() - 1).equals("/~repeat")) {
-					repeatLocation = lstCommands.getSelectedIndex() -1;
+				if (commands.get(lstCommands.getSelectedIndex() - 1).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() - 1;
 				}
-				if(commands.get(lstCommands.getSelectedIndex() - 2).equals("/~repeat")) {
-					repeatLocation = lstCommands.getSelectedIndex() -2;
+				if (commands.get(lstCommands.getSelectedIndex() - 2).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() - 2;
 				}
-				
-				if(repeatLocation != 0) {
+
+				if (repeatLocation != 0) {
 					commands.remove(repeatLocation);
 					commands.remove(repeatLocation);
 					commands.remove(repeatLocation);
-				}else {
+				} else {
 					commands.remove(currIndex);
 				}
-				
-				
+
 			}
 
 		});
-		
+
 		btnEditSelectedFeature.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				int index = lstCommands.getSelectedIndex();
 				AuthUtil.editScenario(commands, index, commands.getType(index));
 			}
-			
+
 		});
 
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
