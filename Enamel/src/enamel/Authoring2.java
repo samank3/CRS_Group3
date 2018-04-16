@@ -246,9 +246,51 @@ public class Authoring2 {
 				
 				if(!arg0.getValueIsAdjusting()) {
 				
-				//System.out.println(lstCommands.getSelectedIndex());
+				int currIndex = lstCommands.getSelectedIndex();
 					
-				if(lstCommands.getSelectedIndex() == -1) {
+				//System.out.println(lstCommands.getSelectedIndex());
+				try {
+				int repeatLocation  = 0;
+				if(commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")){
+					repeatLocation = lstCommands.getSelectedIndex();
+				}
+				if(commands.get(lstCommands.getSelectedIndex() - 1).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() -1;
+				}
+				if(commands.get(lstCommands.getSelectedIndex() - 2).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() -2;
+				}
+				
+				// 4 CASES 1.) WHERE THEY'RE MIN AND MAX , 2.) WHERE ITS RIGHT IN THE MIDDLE, 3.) WHERE ITS TOP, 4.) WHERE ITS BOTTOM
+				if(repeatLocation != 0) {
+					if(repeatLocation == 2 && repeatLocation + 2 == commands.size() -1) {
+						btnEditSelectedFeature.setEnabled(true);	
+						btnMoveUp.setEnabled(false);
+						btnMoveDown.setEnabled(false);
+						btnRemoveSelectedFeature.setEnabled(true);
+					}else if(repeatLocation == 2) {
+						btnEditSelectedFeature.setEnabled(true);	
+						btnMoveUp.setEnabled(false);
+						btnMoveDown.setEnabled(true);
+						btnRemoveSelectedFeature.setEnabled(true);
+					}else if(repeatLocation + 2 == commands.size() -1) {
+						btnEditSelectedFeature.setEnabled(true);	
+						btnMoveUp.setEnabled(true);
+						btnMoveDown.setEnabled(false);
+						btnRemoveSelectedFeature.setEnabled(true);
+					}else {
+						btnEditSelectedFeature.setEnabled(true);	
+						btnMoveUp.setEnabled(true);
+						btnMoveDown.setEnabled(true);
+						btnRemoveSelectedFeature.setEnabled(true);
+					}
+					return;
+				}
+				}catch(Exception e) {
+					
+				}
+					
+				if(currIndex == -1) {
 					btnMoveUp.setEnabled(false);
 					btnMoveDown.setEnabled(false);
 					btnRemoveSelectedFeature.setEnabled(false);
@@ -256,7 +298,7 @@ public class Authoring2 {
 					return;
 				}
 				
-				if(lstCommands.getSelectedIndex() == 0 || lstCommands.getSelectedIndex() == 1) {
+				if(currIndex == 0 || currIndex == 1) {
 					btnMoveUp.setEnabled(false);
 					btnMoveDown.setEnabled(false);
 					btnRemoveSelectedFeature.setEnabled(false);
@@ -264,7 +306,7 @@ public class Authoring2 {
 					return;
 				}
 				
-				if(lstCommands.getSelectedIndex() == 2) {
+				if(currIndex == 2) {
 					btnMoveUp.setEnabled(false);
 					if(lstCommands.getSelectedIndex() == commands.size() -1) {
 						btnMoveDown.setEnabled(false);
@@ -276,7 +318,7 @@ public class Authoring2 {
 					return;
 				}
 				
-				if(lstCommands.getSelectedIndex() == commands.size() -1) {
+				if(currIndex == commands.size() -1) {
 					btnMoveDown.setEnabled(false);
 					btnMoveUp.setEnabled(true);
 					btnRemoveSelectedFeature.setEnabled(true);
@@ -310,7 +352,7 @@ public class Authoring2 {
 				
 				
 				
-				while ((gottenCells.equals("")) || (gottenCells == null) || !AuthUtil.isNumberValid(Double.valueOf(gottenCells))) {
+				while ((gottenCells.equals("")) || (gottenCells == null) || !AuthUtil.isNumberValid(gottenCells)) {
 					gottenCells = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Braille Cells to Use",
 							"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
 					
@@ -319,7 +361,7 @@ public class Authoring2 {
 				String gottenButtons = JOptionPane.showInputDialog(null, "Enter Number of Buttons to Use",
 						"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
 
-				while ((gottenButtons.equals("")) || (gottenButtons == null) || !AuthUtil.isNumberValid(Double.valueOf(gottenButtons))) {
+				while ((gottenButtons.equals("")) || (gottenButtons == null) || !AuthUtil.isNumberValid(gottenButtons)) {
 					gottenButtons = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Buttons to Use",
 							"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
 				}
@@ -474,7 +516,19 @@ public class Authoring2 {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				commands.moveUp(lstCommands.getSelectedIndex());
+				int repeatLocation = 0;
+				int currIndex = lstCommands.getSelectedIndex();
+				if(commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")){
+					repeatLocation = lstCommands.getSelectedIndex();
+				}
+				if(commands.get(lstCommands.getSelectedIndex() - 1).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() -1;
+				}
+				if(commands.get(lstCommands.getSelectedIndex() - 2).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() -2;
+				}
+				
+				commands.moveUp(repeatLocation == 0 ? currIndex : repeatLocation);
 			}
 
 		});
@@ -483,7 +537,18 @@ public class Authoring2 {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				commands.moveDown(lstCommands.getSelectedIndex());
+				int repeatLocation = 0;
+				int currIndex = lstCommands.getSelectedIndex();
+				if(commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")){
+					repeatLocation = lstCommands.getSelectedIndex();
+				}
+				if(commands.get(lstCommands.getSelectedIndex() - 1).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() -1;
+				}
+				if(commands.get(lstCommands.getSelectedIndex() - 2).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() -2;
+				}
+				commands.moveDown(repeatLocation == 0 ? currIndex : repeatLocation);
 			}
 
 		});
@@ -492,7 +557,27 @@ public class Authoring2 {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				commands.remove(lstCommands.getSelectedIndex());
+				int repeatLocation=0;
+				int currIndex = lstCommands.getSelectedIndex();
+				if(commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")){
+					repeatLocation = lstCommands.getSelectedIndex();
+				}
+				if(commands.get(lstCommands.getSelectedIndex() - 1).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() -1;
+				}
+				if(commands.get(lstCommands.getSelectedIndex() - 2).equals("/~repeat")) {
+					repeatLocation = lstCommands.getSelectedIndex() -2;
+				}
+				
+				if(repeatLocation != 0) {
+					commands.remove(repeatLocation);
+					commands.remove(repeatLocation);
+					commands.remove(repeatLocation);
+				}else {
+					commands.remove(currIndex);
+				}
+				
+				
 			}
 
 		});
