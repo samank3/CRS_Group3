@@ -154,6 +154,14 @@ public class Authoring {
 		}
 		return true;
 	}
+	
+	//Checks if the string is an integer in the given radix(base)
+	public static boolean isInteger(String s, int radix) {
+	    Scanner sc = new Scanner(s.trim());
+	    if(!sc.hasNextInt(radix)) return false;
+	    sc.nextInt(radix);
+	    return !sc.hasNext();
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -196,7 +204,7 @@ public class Authoring {
 				String gottenCells = JOptionPane.showInputDialog(null, "Enter Number of Braille Cells to Use",
 						"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
 
-				while ((gottenCells.equals("")) || (gottenCells == null)) {
+				while ((gottenCells.equals("")) || (gottenCells == null) || !isInteger(gottenCells, 10)) {
 					gottenCells = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Braille Cells to Use",
 							"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
 					
@@ -205,7 +213,7 @@ public class Authoring {
 				String gottenButtons = JOptionPane.showInputDialog(null, "Enter Number of Buttons to Use",
 						"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
 
-				while ((gottenButtons.equals("")) || (gottenButtons == null)) {
+				while ((gottenButtons.equals("")) || (gottenButtons == null) || !isInteger(gottenButtons, 10)) {
 					gottenButtons = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Buttons to Use",
 							"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
 				}
