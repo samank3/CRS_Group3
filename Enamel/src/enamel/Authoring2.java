@@ -367,12 +367,12 @@ public class Authoring2 {
 							"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
 
 				}
+				
 
 				String gottenButtons = JOptionPane.showInputDialog(null, "Enter Number of Buttons to Use",
 						"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
 
-				while ((gottenButtons.equals("")) || (gottenButtons == null)
-						|| !AuthUtil.isNumberValid(gottenButtons)) {
+				while ((gottenButtons.equals("")) || (gottenButtons == null)|| !AuthUtil.isNumberValid(gottenButtons)) {
 					gottenButtons = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Buttons to Use",
 							"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
 				}
@@ -461,15 +461,19 @@ public class Authoring2 {
 				}
 
 				String gottenDuration = JOptionPane.showInputDialog(null,
-						"Enter The Duration of the Audio File in Seconds",
-						"Enter The Duration of the Audio File in Seconds", JOptionPane.QUESTION_MESSAGE);
+						"Enter the duration of the audio file in seconds. \nAny numbers with decimals will be rounded down.",
+						"Enter the duration of the audio file in seconds", JOptionPane.QUESTION_MESSAGE);
 				// gottenFileName == null ||
-				while ((gottenDuration.equals("")) || (gottenDuration == null) || !AuthUtil.isNumberValid(gottenDuration)) {
-					gottenDuration = JOptionPane.showInputDialog(null, "Error! Enter a valid duration in seconds.",
-							"Enter duration of the audio file in seconds.", JOptionPane.QUESTION_MESSAGE);
+				long duration = 0;
+				while (duration <= 0) {
+					while ((gottenDuration.equals("")) || (gottenDuration == null) || !AuthUtil.isNumberValid(gottenDuration)) {
+						gottenDuration = JOptionPane.showInputDialog(null, "Error! Enter a valid duration greater than zero in seconds.",
+								"Enter duration of the audio file in seconds.", JOptionPane.QUESTION_MESSAGE);
+					}
+							duration = (long)Double.parseDouble(gottenDuration) * 1000;
+							gottenDuration = "";
 				}
-					long duration = Long.parseLong(gottenDuration) * 1000;
-
+				
 					AudioRecorder recorder = new AudioRecorder(gottenFileName, duration);
 					int recordConfirm = JOptionPane.showConfirmDialog(null,
 							"Recording Will Start When You Press Yes. If No Is Pressed Recording Will Cancel",
