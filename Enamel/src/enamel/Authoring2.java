@@ -386,15 +386,6 @@ public class Authoring2 {
 					gottenButtons = "";
 				}
 				
-				/* long duration = 0;
-				while (duration <= 0) {
-					while ((gottenDuration.equals("")) || (gottenDuration == null) || !AuthUtil.isNumberValid(gottenDuration)) {
-						gottenDuration = JOptionPane.showInputDialog(null, "Error! Enter a valid duration greater than zero in seconds.",
-								"Enter duration of the audio file in seconds.", JOptionPane.QUESTION_MESSAGE);
-					}
-							duration = (long)Double.parseDouble(gottenDuration) * 1000;
-							gottenDuration = "";
-				} */
 				commands.reset();
 				commands.setLastFeatureType(AuthUtil.EDIT_CELL);
 				commands.add("Cell " + cells);
@@ -476,13 +467,13 @@ public class Authoring2 {
 				}
 
 				String gottenDuration = JOptionPane.showInputDialog(null,
-						"Enter the Duration of the Audio File In Seconds. \nAny Numbers With Decimals Will Be Rounded Down.",
+						"Enter the Duration of the Audio File In Seconds \nAny Numbers With Decimals Will Be Rounded Down",
 						"Enter the Duration of the Audio File In Seconds", JOptionPane.QUESTION_MESSAGE);
 				// gottenFileName == null ||
 				long duration = 0;
 				while (duration <= 0) {
 					while ((gottenDuration.equals("")) || (gottenDuration == null) || !AuthUtil.isNumberValid(gottenDuration)) {
-						gottenDuration = JOptionPane.showInputDialog(null, "Error! Enter a Valid Duration Greater Than Zero In Seconds.",
+						gottenDuration = JOptionPane.showInputDialog(null, "Error! Enter a Valid Duration Greater Than Zero In Seconds",
 								"Enter the Duration of the Audio File In Seconds", JOptionPane.QUESTION_MESSAGE);
 					}
 							duration = (long)Double.parseDouble(gottenDuration) * 1000;
