@@ -464,9 +464,10 @@ public class Authoring2 {
 						"Enter The Duration of the Audio File in Seconds",
 						"Enter The Duration of the Audio File in Seconds", JOptionPane.QUESTION_MESSAGE);
 				// gottenFileName == null ||
-				if (gottenFileName == null || gottenDuration == null) {
-					// Do Nothing
-				} else {
+				while ((gottenDuration.equals("")) || (gottenDuration == null) || !AuthUtil.isNumberValid(gottenDuration)) {
+					gottenDuration = JOptionPane.showInputDialog(null, "Error! Enter a valid duration in seconds.",
+							"Enter duration of the audio file in seconds.", JOptionPane.QUESTION_MESSAGE);
+				}
 					long duration = Long.parseLong(gottenDuration) * 1000;
 
 					AudioRecorder recorder = new AudioRecorder(gottenFileName, duration);
@@ -482,10 +483,11 @@ public class Authoring2 {
 						} catch (LineUnavailableException | InterruptedException e1) {
 							e1.printStackTrace();
 						}
-					} else {
+					} 
+					else {
 						JOptionPane.showMessageDialog(null, "Recording Cancelled");
 					}
-				}
+				
 			}
 		});
 
