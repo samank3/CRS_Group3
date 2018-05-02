@@ -360,26 +360,41 @@ public class Authoring2 {
 				if (gottenCells == null) {
 					return;
 				}
-
-				while ((gottenCells.equals("")) || (gottenCells == null) || !AuthUtil.isNumberValid(gottenCells)) {
-					gottenCells = JOptionPane.showInputDialog(null,
-							"Error! Enter a valid number of Braille Cells to Use",
-							"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
-
+				
+				int cells = 0;
+				while (cells <= 0) {
+					while ((gottenCells.equals("")) || (gottenCells == null) || !AuthUtil.isNumberValid(gottenCells)) {
+						gottenCells = JOptionPane.showInputDialog(null,
+								"Error! Enter a Valid Number Greater Than Zero of Braille Cells to Use",
+								"Enter Number of Braille Cells to Use", JOptionPane.QUESTION_MESSAGE);
+					}
+					cells = (int)Double.parseDouble(gottenCells);
+					gottenCells = "";
 				}
 				
 
 				String gottenButtons = JOptionPane.showInputDialog(null, "Enter Number of Buttons to Use",
 						"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
 
-				while ((gottenButtons.equals("")) || (gottenButtons == null)|| !AuthUtil.isNumberValid(gottenButtons)) {
-					gottenButtons = JOptionPane.showInputDialog(null, "Error! Enter a valid number of Buttons to Use",
-							"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
+				int buttons = 0;
+				while (buttons <= 0) {
+					while ((gottenButtons.equals("")) || (gottenButtons == null)|| !AuthUtil.isNumberValid(gottenButtons)) {
+						gottenButtons = JOptionPane.showInputDialog(null, "Error! Enter a Valid Number Greater Than Zero of Buttons to Use",
+								"Enter Number of Buttons to Use", JOptionPane.QUESTION_MESSAGE);
+					}
+					buttons = (int)Double.parseDouble(gottenButtons);
+					gottenButtons = "";
 				}
-
-				int cells = Integer.parseInt(gottenCells);
-				int buttons = Integer.parseInt(gottenButtons);
-
+				
+				/* long duration = 0;
+				while (duration <= 0) {
+					while ((gottenDuration.equals("")) || (gottenDuration == null) || !AuthUtil.isNumberValid(gottenDuration)) {
+						gottenDuration = JOptionPane.showInputDialog(null, "Error! Enter a valid duration greater than zero in seconds.",
+								"Enter duration of the audio file in seconds.", JOptionPane.QUESTION_MESSAGE);
+					}
+							duration = (long)Double.parseDouble(gottenDuration) * 1000;
+							gottenDuration = "";
+				} */
 				commands.reset();
 				commands.setLastFeatureType(AuthUtil.EDIT_CELL);
 				commands.add("Cell " + cells);
@@ -461,14 +476,14 @@ public class Authoring2 {
 				}
 
 				String gottenDuration = JOptionPane.showInputDialog(null,
-						"Enter the duration of the audio file in seconds. \nAny numbers with decimals will be rounded down.",
-						"Enter the duration of the audio file in seconds", JOptionPane.QUESTION_MESSAGE);
+						"Enter the Duration of the Audio File In Seconds. \nAny Numbers With Decimals Will Be Rounded Down.",
+						"Enter the Duration of the Audio File In Seconds", JOptionPane.QUESTION_MESSAGE);
 				// gottenFileName == null ||
 				long duration = 0;
 				while (duration <= 0) {
 					while ((gottenDuration.equals("")) || (gottenDuration == null) || !AuthUtil.isNumberValid(gottenDuration)) {
-						gottenDuration = JOptionPane.showInputDialog(null, "Error! Enter a valid duration greater than zero in seconds.",
-								"Enter duration of the audio file in seconds.", JOptionPane.QUESTION_MESSAGE);
+						gottenDuration = JOptionPane.showInputDialog(null, "Error! Enter a Valid Duration Greater Than Zero In Seconds.",
+								"Enter the Duration of the Audio File In Seconds", JOptionPane.QUESTION_MESSAGE);
 					}
 							duration = (long)Double.parseDouble(gottenDuration) * 1000;
 							gottenDuration = "";
