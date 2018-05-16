@@ -2,6 +2,7 @@ package enamel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
@@ -40,7 +41,7 @@ public class AudioRecorder {
 		TargetDataLine targetDataLine = (TargetDataLine) AudioSystem.getLine(info);
 		targetDataLine.open();
 
-		System.out.println("Starting Recording");
+		Logger.getGlobal().info("Start Recording");
 		targetDataLine.start();
 
 		Thread stopper = new Thread(new Runnable() {
@@ -70,7 +71,7 @@ public class AudioRecorder {
 		targetDataLine.close();
 
 		JOptionPane.showMessageDialog(null, "Recording Complete");
-		System.out.println("Complete");
+		Logger.getGlobal().info("Recording Complete");
 
 		return "";
 

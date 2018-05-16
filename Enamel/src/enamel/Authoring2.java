@@ -2,11 +2,14 @@ package enamel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -59,7 +62,8 @@ public class Authoring2 {
 	public static int commandsSize;
 	public static boolean testResult;
 	public static boolean saveFile;
-	public static String saveFileLocation;
+	public static String saveFileLocation = "";
+	private static Logging log;
 
 	public static boolean openFileDialog() {
 		file_chooser.setDialogTitle("Open Scenario File");
@@ -77,7 +81,7 @@ public class Authoring2 {
 					String line = scanner.nextLine();
 					if (lineCounter == 0) {
 						if (!line.startsWith("Cell")) {
-							System.out.println("File: " + file_chooser.getSelectedFile() + " is not a valid format");
+							Logger.getGlobal().severe("File: " + file_chooser.getSelectedFile() + " is not a valid format");
 							JOptionPane.showMessageDialog(null, "Please select a valid scenario file.");
 							scanner.close();
 							return false;
@@ -85,7 +89,7 @@ public class Authoring2 {
 					}
 					if (lineCounter == 1) {
 						if (!line.startsWith("Button")) {
-							System.out.println("File: " + file_chooser.getSelectedFile() + " is not a valid format");
+							Logger.getGlobal().severe("File: " + file_chooser.getSelectedFile() + " is not a valid format");
 							JOptionPane.showMessageDialog(null, "Please select a valid scenario file.");
 							scanner.close();
 							return false;
@@ -111,14 +115,14 @@ public class Authoring2 {
 				scanner.close();
 				// scenarioReader.setText(buff.toString());
 				enableEditTools();
-				System.out.println("File: " + file_chooser.getSelectedFile() + " has been imported");
+				Logger.getGlobal().fine("File: " + file_chooser.getSelectedFile() + " has been imported");
 
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
 
 		} else {
-			System.out.println("Error Opening File");
+			Logger.getGlobal().severe("Error Opening File");
 			JOptionPane.showMessageDialog(null, "Error Opening File");
 		}
 
@@ -172,7 +176,7 @@ public class Authoring2 {
 			}
 
 		} else {
-			System.out.println("Error Saving File");
+			Logger.getGlobal().severe("Error Saving File");
 			// frame.setTitle("Authoring Application - Error Selecting File");
 			JOptionPane.showMessageDialog(null, "Error Saving File");
 		}
@@ -185,7 +189,22 @@ public class Authoring2 {
 		frame.setBounds(100, 100, 658, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Authoring Application");
-
+		
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we) {
+				log.saveAndReturn();
+		        //int result = JOptionPane.showConfirmDialog(frame,"Do you want to Exit ?", "Exit Confirmation : "JOptionPane.YES_NO_OPTION);
+				boolean saveChk = AuthUtil.fileSaveCheck(saveFile);
+		        if (saveChk) {
+		          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		        } else {
+		          frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		      }
+			}
+		});
+		
+		
+		
 		file_chooser = new JFileChooser();
 		file_chooser.setAcceptAllFileFilterUsed(false);
 		file_chooser.setFileFilter(new FileNameExtensionFilter("Scenario File(.txt)", "txt"));
@@ -197,12 +216,15 @@ public class Authoring2 {
 		sound_opener.setAcceptAllFileFilterUsed(false);
 		sound_opener.setFileFilter(new FileNameExtensionFilter("Audio File(.wav)", "wav"));
 
+		
+		
 		btnChooseScenario = new JButton("Import Scenario");
 		btnChooseScenario.setLocation(new Point(100, 100));
 		btnChooseScenario.setVisible(true);
 		btnCreateScenario = new JButton("Create Scenario");
 		lstCommands = new JList<String>();
 		commands = new CommandList(lstCommands);
+		log = new Logging("Actions");
 		btnCreateScenario.setPreferredSize(new Dimension(95, 23));
 		btnCreateScenario.setMinimumSize(new Dimension(95, 23));
 		btnCreateScenario.setMaximumSize(new Dimension(95, 23));
@@ -244,6 +266,7 @@ public class Authoring2 {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				log.info("btnChooseScenario Executed");
 				openFileDialog();
 			}
 
@@ -258,7 +281,6 @@ public class Authoring2 {
 
 					int currIndex = lstCommands.getSelectedIndex();
 
-					// System.out.println(lstCommands.getSelectedIndex());
 					try {
 						int repeatLocation = 0;
 						if (commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")) {
@@ -348,6 +370,9 @@ public class Authoring2 {
 
 		btnCreateScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				log.info("btnCreateScenario Executed");
+				
 				file_chooser.setSelectedFile(null);
 
 				if (AuthUtil.fileSaveCheck(saveFile) == false) {
@@ -402,7 +427,7 @@ public class Authoring2 {
 
 		btnTestScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				log.info("btnTestScenario Executed");
 				String fileToCheck;
 				if (file_chooser.getSelectedFile() != null && !file_chooser.getSelectedFile().toString().isEmpty() && 
 						commandsSize == commands.size() && saveFile == false) {
@@ -440,6 +465,7 @@ public class Authoring2 {
 
 		btnCreateAudioFiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				log.info("btnCreateAudioFiles Executed");
 				// String gottenFileName = JOptionPane.showInputDialog(null, "Enter Name of
 				// Audio File to Create",
 				// "Enter Name of Audio File to Create", JOptionPane.QUESTION_MESSAGE);
@@ -461,7 +487,7 @@ public class Authoring2 {
 					}
 
 				} else {
-					System.out.println("Error Saving File");
+					Logger.getGlobal().severe("Error Saving File");
 					JOptionPane.showMessageDialog(null, "Error Saving File");
 					return;
 				}
@@ -503,6 +529,7 @@ public class Authoring2 {
 
 		btnExportScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				log.info("btnExportScenario Executed");
 				saveFileDialog();
 			}
 		});
@@ -529,6 +556,7 @@ public class Authoring2 {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				log.info("btnAddFeature Executed");
 				AuthUtil.triggerScenario(commands, cmbFeatures.getSelectedIndex(), AuthUtil.CREATE,
 						lstCommands.getSelectedIndex());
 			}
@@ -539,6 +567,7 @@ public class Authoring2 {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				log.info("btnMoveUp Executed");
 				int repeatLocation = 0;
 				int currIndex = lstCommands.getSelectedIndex();
 				if (commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")) {
@@ -560,6 +589,7 @@ public class Authoring2 {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				log.info("btnMoveDown Executed");
 				int repeatLocation = 0;
 				int currIndex = lstCommands.getSelectedIndex();
 				if (commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")) {
@@ -580,6 +610,7 @@ public class Authoring2 {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				log.info("btnRemoveSelectedFeature Executed");
 				int repeatLocation = 0;
 				int currIndex = lstCommands.getSelectedIndex();
 				if (commands.get(lstCommands.getSelectedIndex()).equals("/~repeat")) {
@@ -608,6 +639,7 @@ public class Authoring2 {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				log.info("btnEditSelectedFeature Executed");
 				int index = lstCommands.getSelectedIndex();
 				AuthUtil.editScenario(commands, index, commands.getType(index));
 			}

@@ -1,6 +1,8 @@
 package enamel;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
@@ -33,6 +35,7 @@ public class AuthUtil {
 	public static final int LOWER_ONE_PIN = 17;
 	public static final int EDIT_BUTTON = 18;
 	public static final int EDIT_CELL = 19;
+	private static final Logging log = new Logging("Actions");
 
 	public static ArrayList<String> populateFeatures() {
 		ArrayList<String> list = new ArrayList<>();
@@ -82,9 +85,8 @@ public class AuthUtil {
 		}
 		return true;
 	}
-
+	
 	public static boolean fileSaveCheck(boolean isEditMade) {
-		System.out.println(isEditMade);
 		if (isEditMade) {
 			// Ask to Save the File
 			JFileChooser file_chooser = new JFileChooser();
@@ -99,10 +101,26 @@ public class AuthUtil {
 				// YES
 				// Check if File location is set, if it is set then modify that file. If no set
 				// then call the saveFileDialog
-				if (!Authoring2.saveFileLocation.equals("")) {
+				if (Authoring2.saveFileLocation.equals("")) { // If saveFileLocatin = something
 					Authoring2.saveFileDialog();
 				} else {
 					// Save file to its existing location.
+					File loc = new File(Authoring2.saveFileLocation);
+					try {
+						FileWriter fw = new FileWriter(loc);
+						Authoring2.scenarioReader.setText("");
+						for (int i = 0; i < Authoring2.commands.size(); i++) {
+							Authoring2.scenarioReader.append(Authoring2.commands.get(i) + "\n");
+						}
+						fw.write(Authoring2.scenarioReader.getText());
+						fw.close();
+						Authoring2.saveFile = false;
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					//Authoring2.saveFileDialog();
 				}
 				return true;
 			} else if (saveDialog == 1) {
@@ -529,6 +547,7 @@ public class AuthUtil {
 		if (index == 0) {
 			JOptionPane.showMessageDialog(null, "Error, select a valid feature to add.");
 		} else if (index == TEXT_TO_SPEECH) {
+			log.info("TEXT_TO_SPEECH Executed");
 			String textToSpeech = JOptionPane.showInputDialog(null, "Enter the Text You Want Said Via Text-To-Speech.",
 					"Enter the Text You Want Said Via Text-To-Speech", JOptionPane.QUESTION_MESSAGE);
 
@@ -538,6 +557,7 @@ public class AuthUtil {
 				JOptionPane.showMessageDialog(null, "Error, Please Make Sure Valid Text is Entered");
 			}
 		} else if (index == ADD_SOUND_FILE) {
+			log.info("ADD_SOUND_FILE Executed");
 			String fileName = "";// = JOptionPane.showInputDialog(null,"Enter the Text You Want Said Via
 			// Text-To-Speech.","Enter the Text You Want Said Via
 			// Text-To-Speech",JOptionPane.QUESTION_MESSAGE);
@@ -551,6 +571,7 @@ public class AuthUtil {
 				cmd.add("/~sound:" + fileName);
 			}
 		} else if (index == ADD_PAUSE) {
+			log.info("ADD_PAUSE Executed");
 			String pause = JOptionPane.showInputDialog(null, "Enter the Number of Seconds to Pause the Scenario for.",
 					"Enter the Number of Seconds to Pause the Scenario for.", JOptionPane.QUESTION_MESSAGE);
 			try {
@@ -564,6 +585,7 @@ public class AuthUtil {
 						+ Integer.MAX_VALUE + ") and is an Integer.");
 			}
 		} else if (index == DISPLAY_BRAILLE_STRING) {
+			log.info("DISPLAY_BRAILLE_STRING Executed");
 			String brailleString = JOptionPane.showInputDialog(null, "Enter the String to be Displayed In Braille",
 					"Enter the String to be Displayed in Braille", JOptionPane.QUESTION_MESSAGE);
 
@@ -574,6 +596,7 @@ public class AuthUtil {
 				JOptionPane.showMessageDialog(null, "Error, Please Make Sure A Valid String is Entered");
 			}
 		} else if (index == ADD_REPEAT_STRING) {
+			log.info("ADD_REPEAT_STRING Executed");
 			String textToRepeat = JOptionPane.showInputDialog(null, "Enter the Text to Repeat",
 					"Enter the Text to Repeat.", JOptionPane.QUESTION_MESSAGE);
 
@@ -585,6 +608,7 @@ public class AuthUtil {
 				JOptionPane.showMessageDialog(null, "Error, Please Make Sure Valid Text is Entered.");
 			}
 		} else if (index == ADD_REPEAT_BUTTON) {
+			log.info("ADD_REPEAT_BUTTON Executed");
 			String buttonIndex = JOptionPane.showInputDialog(null, "Enter the Button Number You Want Repeated",
 					"Enter the Button Number You Want Repeated.", JOptionPane.QUESTION_MESSAGE);
 
@@ -601,6 +625,7 @@ public class AuthUtil {
 				JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Button Number Is Valid And Exists");
 			}
 		} else if (index == SKIP_BUTTON) {
+			log.info("SKIP_BUTTON Executed");
 			String buttonIndex = JOptionPane.showInputDialog(null, "Enter the Button Number You Want Skipped.",
 					"Enter the Button Number You Want Skipped.", JOptionPane.QUESTION_MESSAGE);
 
@@ -628,6 +653,7 @@ public class AuthUtil {
 				JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Identifier is a Valid String.");
 			}
 		} else if (index == INSERT_IDENTIFIER) {
+			log.info("INSERT_IDENTIFIER Executed");
 			String identifier = JOptionPane.showInputDialog(null, "Enter the Identifier You Previously Used.",
 					"Enter the Identifier You Previously Used.", JOptionPane.QUESTION_MESSAGE);
 
@@ -637,11 +663,13 @@ public class AuthUtil {
 				JOptionPane.showMessageDialog(null, "Error, Please Enter a valid identifier string.");
 			}
 		} else if (index == ADD_USER_INPUT) {
+			log.info("ADD_USER_INPUT Executed");
 			Authoring2.addUserInputString();
 		} else if (index == RESET_BUTTONS) {
+			log.info("RESET_BUTTONS Executed");
 			cmd.add("/~reset-buttons");
 		} else if (index == ADD_SKIP) {
-
+			log.info("ADD_SKIP Executed");
 			String identifier = JOptionPane.showInputDialog(null, "Where Do You Want to Skip to? Enter an Identifier.",
 					"Where Do You Want to Skip to? Enter an Indentifier.", JOptionPane.QUESTION_MESSAGE);
 
@@ -652,8 +680,10 @@ public class AuthUtil {
 			}
 
 		} else if (index == CLEAR_ALL_CELLS) {
+			log.info("CLEAR_ALL_CELLS Executed");
 			cmd.add("/~disp-clearAll");
 		} else if (index == CLEAR_SPECIFIC_CELL) {
+			log.info("CLEAR_SPECIFIC_CELL Executed");
 			String cellIndex = JOptionPane.showInputDialog(null, "Enter the Cell Number You Want Cleared.",
 					"Enter the Cell Number You Want Cleared.", JOptionPane.QUESTION_MESSAGE);
 
@@ -669,6 +699,7 @@ public class AuthUtil {
 				JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists");
 			}
 		} else if (index == SET_SPECIFIC_CELL) {
+			log.info("SET_SPECIFIC_CELL Executed");
 			String cellIndex = JOptionPane.showInputDialog(null, "Enter the Cell Number You Want Displayed.",
 					"Enter the Cell Number You Want Displayed.", JOptionPane.QUESTION_MESSAGE);
 
@@ -695,6 +726,7 @@ public class AuthUtil {
 						"Error, Please Make Sure the Cell Number Is Valid And Exists and the 8-Character Sequence is Valid.");
 			}
 		} else if (index == DISPLAY_CELL_CHARACTER) {
+			log.info("DISPLAY_CELL_CHARACTER Executed");
 			String cellIndex = JOptionPane.showInputDialog(null, "Enter the Cell Number You Want Displayed.",
 					"Enter the Cell Number You Want Displayed.", JOptionPane.QUESTION_MESSAGE);
 
@@ -726,6 +758,7 @@ public class AuthUtil {
 				JOptionPane.showMessageDialog(null, "Error, Please Make Sure a Valid English Alphabet is Selected.");
 			}
 		} else if (index == RAISE_ONE_PIN) {
+			log.info("RAISE_ONE_PIN Executed");
 			String cellIndex = JOptionPane.showInputDialog(null, "Enter the Cell Number You Want Raised.",
 					"Enter the Cell Number You Want Raised.", JOptionPane.QUESTION_MESSAGE);
 
@@ -756,6 +789,7 @@ public class AuthUtil {
 				JOptionPane.showMessageDialog(null, "Error, Please Make Sure Pin Number is between 1 and 8.");
 			}
 		} else if (index == LOWER_ONE_PIN) {
+			log.info("LOWER_ONE_PIN Executed");
 			String cellIndex = JOptionPane.showInputDialog(null, "Enter the Cell Number You Want Lowered.",
 					"Enter the Cell Number You Want Lowered.", JOptionPane.QUESTION_MESSAGE);
 

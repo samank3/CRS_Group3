@@ -1,0 +1,4 @@
+btnCreateScenario Executed	10
+btnChooseScenario Executed	7
+btnAddFeature Executed	6
+btnRemoveSelectedFeature Executed	1

@@ -1,7 +1,5 @@
 package enamel;
 
-import static org.junit.jupiter.api.Assumptions.assumingThat;
-
 public class GetFeature {
 
 	public static int type(String s) {
