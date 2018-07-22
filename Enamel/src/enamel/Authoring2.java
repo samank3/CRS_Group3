@@ -64,6 +64,7 @@ public class Authoring2 {
 	public static boolean saveFile;
 	public static String saveFileLocation = "";
 	private static Logging log;
+	private static HotkeyListener hkeyListener;
 
 	public static boolean openFileDialog() {
 		file_chooser.setDialogTitle("Open Scenario File");
@@ -187,6 +188,7 @@ public class Authoring2 {
 		frame = new JFrame();
 		frame.getContentPane().setMaximumSize(new Dimension(149, 23));
 		frame.setBounds(100, 100, 658, 605);
+		//frame.setFocusable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Authoring Application");
 		
@@ -262,6 +264,9 @@ public class Authoring2 {
 		JLabel lblEditFeatures = new JLabel("Edit Features");
 		lblEditFeatures.setFont(new Font("Tahoma", Font.BOLD, 14));
 
+		hkeyListener = new HotkeyListener(frame);		
+		
+		
 		btnChooseScenario.addActionListener(new ActionListener() {
 
 			@Override
