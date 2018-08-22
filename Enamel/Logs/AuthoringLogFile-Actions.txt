@@ -1,4 +1,10 @@
-btnCreateScenario Executed	10
-btnChooseScenario Executed	7
-btnAddFeature Executed	6
-btnRemoveSelectedFeature Executed	1
+btnCreateScenario Executed	55
+btnAddFeature Executed	20
+btnTestScenario Executed	17
+btnChooseScenario Executed	15
+btnCreateAudioFiles Executed	5
+btnEditSelectedFeature Executed	4
+btnExportScenario Executed	3
+btnRemoveSelectedFeature Executed	2
+btnMoveDown Executed	1
+btnMoveUp Executed	1

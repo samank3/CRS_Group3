@@ -21,50 +21,50 @@ public class HotkeyListener {
 			@Override
 			public boolean dispatchKeyEvent(KeyEvent e) {
 
-				if (e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F1
-						&& isFrameActive() && e.isShiftDown()) {
+				if (e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_N
+						&& isFrameActive() && e.isControlDown()) {
 					System.out.println("Create Scenario Hotkey Pressed");
-					Authoring2.btnCreateScenario.doClick();
+					Authoring.btnCreateScenario.doClick();
 					return true;
-				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F2
-						&& isFrameActive() && e.isShiftDown()) {
+				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_O
+						&& isFrameActive() && e.isControlDown()) {
 					System.out.println("Import Scenario Hotkey Pressed");
-					Authoring2.btnChooseScenario.doClick();
+					Authoring.btnChooseScenario.doClick();
 					return true;
-				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F3
-						&& isFrameActive() && e.isShiftDown()) {
+				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_S
+						&& isFrameActive() && e.isControlDown()) {
 					System.out.println("Export Scenario Hotkey Pressed");
-					Authoring2.btnExportScenario.doClick();
+					Authoring.btnExportScenario.doClick();
 					return true;
-				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F4
-						&& isFrameActive() && e.isShiftDown()) {
+				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_T
+						&& isFrameActive() && e.isControlDown()) {
 					System.out.println("Test Scenario Hotkey Pressed");
-					Authoring2.btnTestScenario.doClick();
+					Authoring.btnTestScenario.doClick();
 					return true;
-				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F5
-						&& isFrameActive() && e.isShiftDown()) {
+				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_Q
+						&& isFrameActive() && e.isControlDown()) {
 					System.out.println("Create Audio File Hotkey Pressed");
-					Authoring2.btnCreateAudioFiles.doClick();
+					Authoring.btnCreateAudioFiles.doClick();
 					return true;
-				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F6
-						&& isFrameActive() && e.isShiftDown()) {
+				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_E
+						&& isFrameActive() && e.isControlDown()) {
 					System.out.println("Edit Selected Feature Hotkey Pressed");
-					Authoring2.btnEditSelectedFeature.doClick();
+					Authoring.btnEditSelectedFeature.doClick();
 					return true;
-				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F7
-						&& isFrameActive() && e.isShiftDown()) {
+				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_UP
+						&& isFrameActive() && e.isControlDown()) {
 					System.out.println("Move Up Hotkey Pressed");
-					Authoring2.btnMoveUp.doClick();
+					Authoring.btnMoveUp.doClick();
 					return true;
-				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F8
-						&& isFrameActive() && e.isShiftDown()) {
+				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_DOWN
+						&& isFrameActive() && e.isControlDown()) {
 					System.out.println("Move Down Hotkey Pressed");
-					Authoring2.btnMoveDown.doClick();
+					Authoring.btnMoveDown.doClick();
 					return true;
-				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F9
-						&& isFrameActive() && e.isShiftDown()) {
+				}else if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_X
+						&& isFrameActive() && e.isControlDown()) {
 					System.out.println("Remove Selected Feature Hotkey Pressed");
-					Authoring2.btnRemoveSelectedFeature.doClick();
+					Authoring.btnRemoveSelectedFeature.doClick();
 					return true;
 				}
 				System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getActiveWindow().getName());

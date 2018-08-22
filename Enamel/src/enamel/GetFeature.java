@@ -9,11 +9,11 @@ public class GetFeature {
 		
 		if(s.startsWith("Cell")) {
 			int cells = Integer.valueOf(s.replace("Cell ", "").trim());
-			Authoring2.cellNum = cells;
+			Authoring.cellNum = cells;
 			return AuthUtil.EDIT_CELL;
 		}else if(s.startsWith("Button")) {
 			int buttons = Integer.valueOf(s.replace("Button ", "").trim());
-			Authoring2.buttonNum = buttons;
+			Authoring.buttonNum = buttons;
 			return AuthUtil.EDIT_BUTTON;
 		}else if(s.startsWith("/~sound")) {
 			return AuthUtil.ADD_SOUND_FILE;

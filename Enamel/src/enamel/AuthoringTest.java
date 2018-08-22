@@ -12,6 +12,7 @@ import java.util.Scanner;
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JList;
 import javax.swing.JTextArea;
 
 import org.junit.Before;
@@ -66,10 +67,51 @@ public class AuthoringTest {
 
 	@Test
 	public void testAddNewEvent() {
-		Authoring.btnAddUserInput = new JButton();
 		Authoring.scenarioReader = new JTextArea();
+		Authoring.commands = new CommandList(new JList<String>());
 		Authoring.addUserInputString();
-		assertEquals("/~user-input\n", Authoring.scenarioReader.getText());
+		assertEquals("/~user-input", Authoring.commands.get(0).toString());
+		//assertEquals("/~user-input\n", Authoring.scenarioReader.getText());
+	}
+	
+	@Test
+	public void testTextToSpeech() {
+		Authoring.commands = new CommandList(new JList<String>());
+		AuthUtil.triggerScenario(Authoring.commands, AuthUtil.TEXT_TO_SPEECH, AuthUtil.CREATE,
+				0);
+		assertEquals("Hello Test",Authoring.commands.get(0).toString());
+	}
+	
+	@Test
+	public void testAddPause() {
+		Authoring.commands = new CommandList(new JList<String>());
+		AuthUtil.triggerScenario(Authoring.commands, AuthUtil.ADD_PAUSE, AuthUtil.CREATE, 0);
+		assertEquals("/~pause:5", Authoring.commands.get(0).toString());
+	}
+	
+	@Test
+	public void testDisplayBrailleString() {
+		Authoring.commands = new CommandList(new JList<String>());
+		Authoring.commands.add("Cell 1");
+		Authoring.commands.add("Button 4");
+		AuthUtil.triggerScenario(Authoring.commands, AuthUtil.DISPLAY_BRAILLE_STRING, AuthUtil.CREATE, 0);
+		assertEquals("/~disp-string:Test", Authoring.commands.get(2).toString());
+	}
+	
+	@Test
+	public void testSetSpecificCell() {
+		Authoring.commands = new CommandList(new JList<String>());
+		Authoring.cellNum = 1;
+		Authoring.buttonNum = 4;
+		AuthUtil.triggerScenario(Authoring.commands, AuthUtil.SET_SPECIFIC_CELL, AuthUtil.CREATE, 0);
+		assertEquals("/~disp-cell-pins:0 10101010", Authoring.commands.get(0).toString());
+	}
+	
+	@Test
+	public void testResetButtons() {
+		Authoring.commands = new CommandList(new JList<String>());
+		AuthUtil.triggerScenario(Authoring.commands, AuthUtil.RESET_BUTTONS, AuthUtil.CREATE, 0);
+		assertEquals("/~reset-buttons", Authoring.commands.get(0).toString());
 	}
 
 	@Test
@@ -140,7 +182,7 @@ public class AuthoringTest {
 	 * "MyExample.txt" is then compared with the expected output
 	 */
 	@Test
-	void testSavedFile() throws FileNotFoundException {
+	public void testSavedFile() throws FileNotFoundException {
 
 		Scanner in = new Scanner(new FileReader("FactoryScenarios/MyExample.txt"));
 		StringBuilder sb = new StringBuilder();

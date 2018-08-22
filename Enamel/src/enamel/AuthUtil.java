@@ -101,20 +101,20 @@ public class AuthUtil {
 				// YES
 				// Check if File location is set, if it is set then modify that file. If no set
 				// then call the saveFileDialog
-				if (Authoring2.saveFileLocation.equals("")) { // If saveFileLocatin = something
-					Authoring2.saveFileDialog();
+				if (Authoring.saveFileLocation.equals("")) { // If saveFileLocatin = something
+					Authoring.saveFileDialog();
 				} else {
 					// Save file to its existing location.
-					File loc = new File(Authoring2.saveFileLocation);
+					File loc = new File(Authoring.saveFileLocation);
 					try {
 						FileWriter fw = new FileWriter(loc);
-						Authoring2.scenarioReader.setText("");
-						for (int i = 0; i < Authoring2.commands.size(); i++) {
-							Authoring2.scenarioReader.append(Authoring2.commands.get(i) + "\n");
+						Authoring.scenarioReader.setText("");
+						for (int i = 0; i < Authoring.commands.size(); i++) {
+							Authoring.scenarioReader.append(Authoring.commands.get(i) + "\n");
 						}
-						fw.write(Authoring2.scenarioReader.getText());
+						fw.write(Authoring.scenarioReader.getText());
 						fw.close();
-						Authoring2.saveFile = false;
+						Authoring.saveFile = false;
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -213,8 +213,8 @@ public class AuthUtil {
 						JOptionPane.QUESTION_MESSAGE, null, null, cellNumm);
 			}
 
-			Authoring2.cellNum = Integer.valueOf(gottenCells);
-			cmd.replace(location, "Cell " + Authoring2.cellNum);
+			Authoring.cellNum = Integer.valueOf(gottenCells);
+			cmd.replace(location, "Cell " + Authoring.cellNum);
 		} else if (featureType == EDIT_BUTTON) {
 
 			String buttonNumm = cmd.get(location).replace("Button ", "").trim();
@@ -228,8 +228,8 @@ public class AuthUtil {
 						JOptionPane.QUESTION_MESSAGE, null, null, buttonNumm);
 			}
 
-			Authoring2.buttonNum = Integer.valueOf(gottenButtons);
-			cmd.replace(location, "Button " + Authoring2.buttonNum);
+			Authoring.buttonNum = Integer.valueOf(gottenButtons);
+			cmd.replace(location, "Button " + Authoring.buttonNum);
 
 		} else if (featureType == ADD_SOUND_FILE) {
 			String fileName = "";// = JOptionPane.showInputDialog(null,"Enter the Text You Want Said Via
@@ -240,7 +240,7 @@ public class AuthUtil {
 			ss.setAcceptAllFileFilterUsed(false);
 			ss.setFileFilter(new FileNameExtensionFilter("Audio File(.wav)", "wav"));
 			ss.setCurrentDirectory(new File("FactoryScenarios/AudioFiles/"));
-			if (ss.showOpenDialog(Authoring2.btnAddFeature) == JFileChooser.APPROVE_OPTION) {
+			if (ss.showOpenDialog(Authoring.btnAddFeature) == JFileChooser.APPROVE_OPTION) {
 				fileName = ss.getSelectedFile().getName().toString();
 				cmd.replace(location, "/~sound:" + fileName);
 			}
@@ -305,7 +305,7 @@ public class AuthUtil {
 
 			if (buttonIndex != null && isNumberValid(buttonIndex) && !buttonIndex.trim().equals("")) {
 
-				if (Integer.parseInt(buttonIndex) > 0 && Integer.parseInt(buttonIndex) <= Authoring2.buttonNum) {
+				if (Integer.parseInt(buttonIndex) > 0 && Integer.parseInt(buttonIndex) <= Authoring.buttonNum) {
 					cmd.replace(location, "/~repeat-button:" + (Integer.parseInt(buttonIndex) - 1));
 				} else {
 					JOptionPane.showMessageDialog(null,
@@ -324,7 +324,7 @@ public class AuthUtil {
 					Integer.valueOf(arr[0]) + 1);
 
 			if (buttonIndex != null && !buttonIndex.trim().equals("") && isNumberValid(buttonIndex)) {
-				if (Integer.parseInt(buttonIndex) > 0 && Integer.parseInt(buttonIndex) <= Authoring2.buttonNum) {
+				if (Integer.parseInt(buttonIndex) > 0 && Integer.parseInt(buttonIndex) <= Authoring.buttonNum) {
 					// Do Nothing
 				} else {
 					// ERROR
@@ -389,7 +389,7 @@ public class AuthUtil {
 
 			if (cellIndex != null && isNumberValid(cellIndex) && !cellIndex.trim().equals("")) {
 
-				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring2.cellNum) {
+				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring.cellNum) {
 					cmd.replace(location, "/~disp-clear-cell:" + (Integer.parseInt(cellIndex) - 1));
 				} else {
 					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists");
@@ -406,7 +406,7 @@ public class AuthUtil {
 					Integer.valueOf(arr[0]) + 1);
 
 			if (cellIndex != null && !cellIndex.trim().equals("") && isNumberValid(cellIndex)) {
-				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring2.cellNum) {
+				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring.cellNum) {
 
 				} else {
 					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists");
@@ -423,7 +423,7 @@ public class AuthUtil {
 					null, arr[1]);
 
 			if (cellIndex != null && Integer.parseInt(cellIndex) > 0
-					&& Integer.parseInt(cellIndex) <= Authoring2.cellNum && sequence.length() == 8
+					&& Integer.parseInt(cellIndex) <= Authoring.cellNum && sequence.length() == 8
 					&& sequence.matches("[01]+")) {
 				cmd.replace(location, "/~disp-cell-pins:" + (Integer.parseInt(cellIndex) - 1) + " " + sequence);
 			} else {
@@ -439,7 +439,7 @@ public class AuthUtil {
 					Integer.valueOf(arr[0]) + 1);
 
 			if (cellIndex != null && !cellIndex.trim().equals("") && isNumberValid(cellIndex)) {
-				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring2.cellNum) {
+				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring.cellNum) {
 					// do nothing
 				} else {
 					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists.");
@@ -474,7 +474,7 @@ public class AuthUtil {
 					Integer.valueOf(arr[0]) + 1);
 
 			if (cellIndex != null && !cellIndex.trim().equals("") && isNumberValid(cellIndex)) {
-				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring2.cellNum) {
+				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring.cellNum) {
 					// Do nothing
 				} else {
 					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists.");
@@ -509,7 +509,7 @@ public class AuthUtil {
 					Integer.valueOf(arr[0]) + 1);
 
 			if (cellIndex != null && !cellIndex.trim().equals("") && isNumberValid(cellIndex)) {
-				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring2.cellNum) {
+				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring.cellNum) {
 					// Do nothing
 				} else {
 					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists.");
@@ -566,7 +566,7 @@ public class AuthUtil {
 			ss.setAcceptAllFileFilterUsed(false);
 			ss.setFileFilter(new FileNameExtensionFilter("Audio File(.wav)", "wav"));
 			ss.setCurrentDirectory(new File("FactoryScenarios/AudioFiles/"));
-			if (ss.showOpenDialog(Authoring2.btnAddFeature) == JFileChooser.APPROVE_OPTION) {
+			if (ss.showOpenDialog(Authoring.btnAddFeature) == JFileChooser.APPROVE_OPTION) {
 				fileName = ss.getSelectedFile().getName().toString();
 				cmd.add("/~sound:" + fileName);
 			}
@@ -614,7 +614,7 @@ public class AuthUtil {
 
 			if (buttonIndex != null && isNumberValid(buttonIndex) && !buttonIndex.trim().equals("")) {
 
-				if (Integer.parseInt(buttonIndex) > 0 && Integer.parseInt(buttonIndex) <= Authoring2.buttonNum) {
+				if (Integer.parseInt(buttonIndex) > 0 && Integer.parseInt(buttonIndex) <= Authoring.buttonNum) {
 					cmd.add("/~repeat-button:" + (Integer.parseInt(buttonIndex) - 1));
 				} else {
 					JOptionPane.showMessageDialog(null,
@@ -630,7 +630,7 @@ public class AuthUtil {
 					"Enter the Button Number You Want Skipped.", JOptionPane.QUESTION_MESSAGE);
 
 			if (buttonIndex != null && !buttonIndex.trim().equals("") && isNumberValid(buttonIndex)) {
-				if (Integer.parseInt(buttonIndex) > 0 && Integer.parseInt(buttonIndex) <= Authoring2.buttonNum) {
+				if (Integer.parseInt(buttonIndex) > 0 && Integer.parseInt(buttonIndex) <= Authoring.buttonNum) {
 					// Do Nothing
 				} else {
 					// ERROR
@@ -664,7 +664,7 @@ public class AuthUtil {
 			}
 		} else if (index == ADD_USER_INPUT) {
 			log.info("ADD_USER_INPUT Executed");
-			Authoring2.addUserInputString();
+			Authoring.addUserInputString();
 		} else if (index == RESET_BUTTONS) {
 			log.info("RESET_BUTTONS Executed");
 			cmd.add("/~reset-buttons");
@@ -689,7 +689,7 @@ public class AuthUtil {
 
 			if (cellIndex != null && !cellIndex.trim().equals("") && isNumberValid(cellIndex)) {
 
-				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring2.cellNum) {
+				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring.cellNum) {
 					cmd.add("/~disp-clear-cell:" + (Integer.parseInt(cellIndex) - 1));
 				} else {
 					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists");
@@ -704,7 +704,7 @@ public class AuthUtil {
 					"Enter the Cell Number You Want Displayed.", JOptionPane.QUESTION_MESSAGE);
 
 			if (cellIndex != null && !cellIndex.trim().equals("") && isNumberValid(cellIndex)) {
-				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring2.cellNum) {
+				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring.cellNum) {
 
 				} else {
 					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists");
@@ -731,7 +731,7 @@ public class AuthUtil {
 					"Enter the Cell Number You Want Displayed.", JOptionPane.QUESTION_MESSAGE);
 
 			if (cellIndex != null && !cellIndex.trim().equals("") && isNumberValid(cellIndex)) {
-				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring2.cellNum) {
+				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring.cellNum) {
 					// do nothing
 				} else {
 					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists.");
@@ -763,7 +763,7 @@ public class AuthUtil {
 					"Enter the Cell Number You Want Raised.", JOptionPane.QUESTION_MESSAGE);
 
 			if (cellIndex != null && !cellIndex.trim().equals("") && isNumberValid(cellIndex)) {
-				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring2.cellNum) {
+				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring.cellNum) {
 					// Do nothing
 				} else {
 					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists.");
@@ -794,7 +794,7 @@ public class AuthUtil {
 					"Enter the Cell Number You Want Lowered.", JOptionPane.QUESTION_MESSAGE);
 
 			if (cellIndex != null && !cellIndex.trim().equals("") && isNumberValid(cellIndex)) {
-				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring2.cellNum) {
+				if (Integer.parseInt(cellIndex) > 0 && Integer.parseInt(cellIndex) <= Authoring.cellNum) {
 					// Do nothing
 				} else {
 					JOptionPane.showMessageDialog(null, "Error, Please Make Sure the Cell Number Is Valid And Exists.");
@@ -822,7 +822,7 @@ public class AuthUtil {
 		} else {
 			JOptionPane.showMessageDialog(null, "Error, select a valid feature to add.");
 		}
-		Authoring2.saveFile = true;
+		Authoring.saveFile = true;
 	}
 
 }
