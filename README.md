@@ -1,9 +1,11 @@
 # CRS_Group3
 
 README File for CRS Inc. in Java
-Last updated: August 20, 2018
+Last updated: August 21, 2018
 
-Completed the set and released on 20 August 2018, reviewed by all group members.
+Completed the set and released on 21 August 2018, reviewed by all group members.
+
+**FOR OPTIMAL USE, PLEASE RUN PROGRAM USING ECLIPSE**
 
 This release contains:
 
